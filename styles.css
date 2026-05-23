@@ -570,6 +570,7 @@ body {
   border-color: var(--gold);
   color: var(--gold);
   transform: translateY(-5px);
+}
 /* ========================================= */
 /* FOOTER BOTTOM */
 /* ========================================= */
@@ -580,4 +581,225 @@ body {
   color: #666;
   font-size: 0.9rem;
   overflow: visible;
+}
+
+/* =========================================================================
+   HAMBURGER MENU BUTTON
+========================================================================= */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  z-index: 200;
+  padding: 5px;
+}
+.hamburger span {
+  display: block;
+  width: 28px;
+  height: 2px;
+  background: var(--gold);
+  transition: all 0.3s ease;
+  border-radius: 2px;
+}
+.hamburger.active span:nth-child(1) {
+  transform: rotate(45deg) translate(6px, 6px);
+}
+.hamburger.active span:nth-child(2) {
+  opacity: 0;
+}
+.hamburger.active span:nth-child(3) {
+  transform: rotate(-45deg) translate(6px, -6px);
+}
+
+/* =========================================================================
+   TABLET BREAKPOINT (max-width: 1024px)
+========================================================================= */
+@media (max-width: 1024px) {
+  .hero-container {
+    flex-direction: column;
+    gap: 40px;
+  }
+  .flip-card-container {
+    width: 280px;
+    height: 400px;
+  }
+  .book-row,
+  .book-row.reverse {
+    flex-direction: column;
+    gap: 40px;
+    min-height: auto;
+  }
+  .book-tilt-wrap {
+    width: 300px;
+    height: 450px;
+  }
+  .b-title {
+    font-size: 2.5rem;
+  }
+  .about-container {
+    flex-direction: column;
+    gap: 40px;
+  }
+  .ow-heading {
+    font-size: 2.5rem;
+  }
+}
+
+/* =========================================================================
+   MOBILE BREAKPOINT (max-width: 768px)
+========================================================================= */
+@media (max-width: 768px) {
+  /* Show hamburger */
+  .hamburger {
+    display: flex;
+  }
+
+  /* Fullscreen mobile nav overlay */
+  .nav-links {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.95);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+    transform: translateX(100%);
+    transition: transform 0.4s ease;
+    z-index: 99;
+  }
+  .nav-links.active {
+    transform: translateX(0);
+  }
+  .nav-links a {
+    font-size: 1.2rem;
+    letter-spacing: 3px;
+  }
+
+  /* Hero */
+  .hero-title {
+    font-size: clamp(1.8rem, 8vw, 3rem);
+  }
+  .hero-subtitle {
+    font-size: 1rem;
+    letter-spacing: 3px;
+  }
+  .hero-container {
+    padding: 0 20px;
+  }
+
+  /* Flip card */
+  .flip-card-container {
+    width: 220px;
+    height: 320px;
+  }
+
+  /* Books */
+  .book-row,
+  .book-row.reverse {
+    gap: 30px;
+    padding: 40px 0;
+  }
+  .book-tilt-wrap {
+    width: 250px;
+    height: 375px;
+  }
+  .b-title {
+    font-size: 2rem;
+  }
+  .b-num {
+    font-size: 2.5rem;
+  }
+  .b-synopsis {
+    font-size: 1rem;
+  }
+  .b-btn {
+    padding: 12px 25px;
+    font-size: 0.75rem;
+  }
+  .books-showcase {
+    padding: 60px 5%;
+  }
+
+  /* Other Works */
+  .other-works {
+    padding: 80px 5%;
+  }
+  .ow-heading {
+    font-size: 2rem;
+    margin-bottom: 40px;
+  }
+  .ow-card {
+    padding: 25px;
+  }
+
+  /* About */
+  .about-container {
+    padding: 0 20px;
+  }
+  .about-author .flip-card-container {
+    width: 200px;
+    height: 300px;
+  }
+
+  /* Footer */
+  .footer-title {
+    font-size: 2rem;
+  }
+  .social-btn {
+    width: 50px;
+    height: 50px;
+  }
+  .social-links {
+    gap: 20px;
+  }
+
+  /* Hide cursor glow on touch devices */
+  #cursor-glow {
+    display: none;
+  }
+}
+
+/* =========================================================================
+   SMALL MOBILE BREAKPOINT (max-width: 480px)
+========================================================================= */
+@media (max-width: 480px) {
+  .hero-title {
+    font-size: clamp(1.5rem, 10vw, 2.5rem);
+  }
+  .hero-title .word {
+    margin: 0 5px;
+  }
+  .book-tilt-wrap {
+    width: 200px;
+    height: 300px;
+  }
+  .b-title {
+    font-size: 1.6rem;
+  }
+  .b-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+  .b-btn {
+    width: 100%;
+    text-align: center;
+  }
+  .footer {
+    padding: 60px 15px 30px;
+  }
+  .footer-content {
+    margin-bottom: 40px;
+  }
+  .loader-text {
+    font-size: 1rem;
+    letter-spacing: 3px;
+  }
 }

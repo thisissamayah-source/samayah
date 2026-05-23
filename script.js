@@ -241,6 +241,23 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   });
 });
 
+// Mobile Menu Toggle
+const hamburger = document.getElementById('hamburger');
+const navLinks = document.querySelector('.nav-links');
+if (hamburger && navLinks) {
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navLinks.classList.toggle('active');
+  });
+  // Close menu when a link is clicked
+  navLinks.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('active');
+      navLinks.classList.remove('active');
+    });
+  });
+}
+
 // =========================================================================
 // FIREFLY PARTICLES
 // =========================================================================
@@ -551,7 +568,7 @@ function initParticles() {
     particles = [];
     butterflies = [];
     
-    let numParticles = Math.floor((width * height) / 6000); // Dense swarm
+    let numParticles = Math.floor((width * height) / (width < 768 ? 15000 : 6000)); // Reduce on mobile
     for(let i=0; i<numParticles; i++) {
       particles.push(new Firefly());
     }
