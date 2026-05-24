@@ -24,28 +24,106 @@ function raf(time) {
 requestAnimationFrame(raf);
 
 // =========================================================================
-// LOADER & INIT
+// CINEMATIC LOADER
 // =========================================================================
-window.addEventListener('load', () => {
-  // Simple loader progress animation
-  gsap.to('.loader-progress', { 
-    width: '100%', 
-    duration: 1, 
-    ease: 'power2.inOut',
-    onComplete: () => {
-      gsap.to('#loader', {
-        opacity: 0,
-        duration: 0.8,
-        ease: 'power2.inOut',
-        onComplete: () => {
-          document.getElementById('loader').style.display = 'none';
-          document.body.classList.remove('loading');
-          initAnimations();
-        }
-      });
+(function initLoader() {
+  const LED_COUNT   = 38;
+  const MIN_DURATION = 2800; // minimum ms before exit
+
+  /* --- Build animated letters --- */
+  function makeLetters(containerId, text, baseDelay, isMain) {
+    const row = document.getElementById(containerId);
+    if (!row) return;
+    text.split('').forEach((ch, i) => {
+      const span = document.createElement('span');
+      span.className = 'loader-letter';
+      span.textContent = ch === ' ' ? '\u00a0' : ch;
+      span.style.animationDelay = `${baseDelay + i * (isMain ? 0.075 : 0.055)}s`;
+      row.appendChild(span);
+    });
+  }
+
+  /* --- Build LED dot bar --- */
+  function makeLEDs() {
+    const bar = document.getElementById('loaderLedBar');
+    if (!bar) return [];
+    const dots = [];
+    for (let i = 0; i < LED_COUNT; i++) {
+      const d = document.createElement('div');
+      d.className = 'led-dot';
+      bar.appendChild(d);
+      dots.push(d);
     }
+    return dots;
+  }
+
+  makeLetters('loaderRow1', 'SATHYARAJ', 0.85, true);
+  makeLetters('loaderRow2', 'NATARAJAN', 1.5, false);
+  const dots      = makeLEDs();
+  const counterEl = document.getElementById('loaderCounter');
+  const flashEl   = document.getElementById('loaderFlash');
+
+  let startTime   = null;
+  let pageLoaded  = false;
+  let rafId       = null;
+
+  /* --- rAF counter loop --- */
+  function tickLoader(ts) {
+    if (!startTime) startTime = ts;
+    const elapsed  = ts - startTime;
+    const rawPct   = Math.min(elapsed / MIN_DURATION, 1);
+    // Ease-out so it feels organic, not mechanical
+    const pct = 1 - Math.pow(1 - rawPct, 2);
+    const val = Math.round(pct * 100);
+
+    /* Counter text */
+    if (counterEl) counterEl.textContent = String(val).padStart(3, '0');
+
+    /* LED dots */
+    const lit = Math.floor(pct * LED_COUNT);
+    dots.forEach((d, i) => {
+      if (i < lit) {
+        d.className = 'led-dot on';
+      } else if (i === lit) {
+        d.className = 'led-dot on-dim';
+      } else {
+        d.className = 'led-dot';
+      }
+    });
+
+    if (rawPct < 1 || !pageLoaded) {
+      rafId = requestAnimationFrame(tickLoader);
+    } else {
+      exitLoader();
+    }
+  }
+
+  /* --- Exit sequence: smooth fade into the site --- */
+  function exitLoader() {
+    gsap.to('#loader', {
+      opacity: 0,
+      scale: 1.015,
+      duration: 0.9,
+      ease: 'power2.inOut',
+      onComplete: () => {
+        const el = document.getElementById('loader');
+        if (el) el.style.display = 'none';
+        document.body.classList.remove('loading');
+        initAnimations();
+      }
+    });
+  }
+
+  /* --- Start ticking immediately, mark page loaded when ready --- */
+  requestAnimationFrame(tickLoader);
+
+  window.addEventListener('load', () => {
+    pageLoaded = true;
+    // If rAF already stopped (edge case), exit now
+    if (!rafId) exitLoader();
   });
-});
+})();
+
 
 function initAnimations() {
   // Hero Typography Entrance
@@ -64,6 +142,39 @@ function initAnimations() {
   initParticles();
   initTitleShuffle();
   initReadMore();
+  initBuyDropdowns();
+}
+
+// =========================================================================
+// BUY NOW DROPDOWN
+// =========================================================================
+function initBuyDropdowns() {
+  // Toggle on trigger click
+  document.addEventListener('click', (e) => {
+    const trigger = e.target.closest('.buy-dropdown-trigger');
+    const allWraps = document.querySelectorAll('.buy-dropdown-wrap');
+
+    if (trigger) {
+      e.preventDefault();
+      const wrap = trigger.closest('.buy-dropdown-wrap');
+      const isOpen = wrap.classList.contains('open');
+      // Close every other open dropdown first
+      allWraps.forEach(w => w.classList.remove('open'));
+      // Toggle the clicked one
+      if (!isOpen) wrap.classList.add('open');
+    } else if (!e.target.closest('.buy-dropdown')) {
+      // Click anywhere outside → close all
+      allWraps.forEach(w => w.classList.remove('open'));
+    }
+  });
+
+  // Escape key closes all
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.buy-dropdown-wrap.open')
+        .forEach(w => w.classList.remove('open'));
+    }
+  });
 }
 
 // =========================================================================
@@ -181,42 +292,105 @@ function initScrollTriggers() {
 }
 
 // =========================================================================
-// 3D TILT HOVER EFFECTS (Books)
+// 3D BOOK — float + hover tilt
 // =========================================================================
 function initTiltEffects() {
-  const tiltWraps = document.querySelectorAll('.book-tilt-wrap');
-  
-  tiltWraps.forEach(wrap => {
-    wrap.addEventListener('mousemove', (e) => {
-      const rect = wrap.getBoundingClientRect();
-      const x = e.clientX - rect.left; // x pos within the element
-      const y = e.clientY - rect.top;  // y pos within the element
-      
-      const centerX = rect.width / 2;
-      const centerY = rect.height / 2;
-      
-      const rotateX = ((y - centerY) / centerY) * -40; // Max 40deg
-      const rotateY = ((x - centerX) / centerX) * 40;
-      
-      gsap.to(wrap, {
-        rotationX: rotateX,
-        rotationY: rotateY,
+  const scenes   = document.querySelectorAll('.book-tilt-wrap');
+  const REST_Y   = -22;  // resting angle — spine visible
+  const HOVER_Y  = -8;   // angle on hover — more front visible
+  const MAX_Y    = 12;   // extra Y swing from mouse X
+  const MAX_X    = 4;    // X tilt from mouse Y
+
+  scenes.forEach((scene, idx) => {
+    const book   = scene.querySelector('.book-3d');
+    const shadow = scene.querySelector('.book-floor-shadow');
+    if (!book) return;
+
+    // Gentle float — each book at a different phase so they don't all move in sync
+    const floatTween = gsap.to(book, {
+      y: -14,
+      duration: 2.0 + idx * 0.18,
+      ease: 'power1.inOut',
+      yoyo: true,
+      repeat: -1,
+      delay: idx * 0.35
+    });
+
+    // ---- Mouse enter: pause float, open toward viewer ----
+    scene.addEventListener('mouseenter', () => {
+      floatTween.pause();
+      gsap.to(book, {
+        rotateY: HOVER_Y,
+        rotateX: 0,
+        y: 0,
         duration: 0.5,
         ease: 'power2.out',
-        transformPerspective: 1200
+        overwrite: 'auto'
+      });
+      if (shadow) gsap.to(shadow, {
+        scaleX: 0.55, opacity: 0.25, duration: 0.5
       });
     });
-    
-    wrap.addEventListener('mouseleave', () => {
-      gsap.to(wrap, {
-        rotationX: 0,
-        rotationY: 0,
-        duration: 0.8,
-        ease: 'power2.out'
+
+    // ---- Mouse move: calm follow ----
+    scene.addEventListener('mousemove', (e) => {
+      const r  = scene.getBoundingClientRect();
+      const nx = (e.clientX - r.left) / r.width  - 0.5;
+      const ny = (e.clientY - r.top)  / r.height - 0.5;
+      gsap.to(book, {
+        rotateY: HOVER_Y + nx * MAX_Y * 2,
+        rotateX: -ny  * MAX_X * 2,
+        duration: 0.35,
+        ease: 'power2.out',
+        overwrite: 'auto'
       });
     });
-  });
-}
+
+    // ---- Mouse leave: spring back, resume float ----
+    scene.addEventListener('mouseleave', () => {
+      gsap.to(book, {
+        rotateY: REST_Y,
+        rotateX: 0,
+        y: 0,
+        duration: 0.9,
+        ease: 'power3.out',
+        overwrite: 'auto',
+        onComplete: () => floatTween.resume()
+      });
+      if (shadow) gsap.to(shadow, {
+        scaleX: 1, opacity: 1, duration: 0.9
+      });
+    });
+
+    // ---- Touch: tap to peek front face, lift to return ----
+    scene.addEventListener('touchstart', (e) => {
+      floatTween.pause();
+      const t  = e.touches[0];
+      const r  = scene.getBoundingClientRect();
+      const nx = (t.clientX - r.left) / r.width - 0.5;
+      gsap.to(book, {
+        rotateY: HOVER_Y + nx * MAX_Y,
+        rotateX: 0,
+        y: 0,
+        duration: 0.5,
+        ease: 'power2.out',
+        overwrite: 'auto'
+      });
+    }, { passive: true });
+
+    scene.addEventListener('touchend', () => {
+      gsap.to(book, {
+        rotateY: REST_Y,
+        rotateX: 0,
+        y: 0,
+        duration: 0.9,
+        ease: 'power3.out',
+        overwrite: 'auto',
+        onComplete: () => floatTween.resume()
+      });
+    }, { passive: true });
+  }); // end forEach
+} // end initTiltEffects
 
 // =========================================================================
 // CURSOR GLOW
@@ -240,6 +414,112 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     lenis.scrollTo(this.getAttribute('href'));
   });
 });
+
+// =========================================================================
+// ABOUT SECTION — 3-STATE IDENTITY CARD (Author → VE → Film → repeat)
+// =========================================================================
+var cardState = 0; // 0=Author, 1=VE, 2=Film
+
+var cardPhotos = [
+  'assets/author_photo.jpg',
+  'assets/author_photo_ve.jpg',
+  'assets/author_photo_film.jpg'
+];
+var cardHints = [
+  'Click to reveal',
+  'Click to reveal',
+  'Click to reveal'
+];
+var bioPanelIds = ['bioAuthor', 'bioVE', 'bioFilm'];
+
+// Show first panel on load
+window.addEventListener('DOMContentLoaded', function () {
+  var first = document.getElementById('bioAuthor');
+  if (first) first.classList.add('active');
+});
+
+function syncCardUI(state) {
+  // Dots
+  document.querySelectorAll('.card-dot').forEach(function(d) {
+    d.classList.toggle('active', parseInt(d.dataset.index) === state);
+  });
+  // Labels
+  document.querySelectorAll('.card-label').forEach(function(l) {
+    l.classList.toggle('active', parseInt(l.dataset.index) === state);
+  });
+}
+
+function toggleCard() {
+  var cardInner = document.getElementById('authorCardInner');
+  var cardImg   = document.getElementById('authorCardImg');
+  if (!cardInner || !cardImg) return;
+
+  // Step 1: Rotate card to edge (90deg) — half flip out
+  cardInner.classList.add('flip-out');
+
+  setTimeout(function () {
+    // Step 2: At the edge — swap photo and bio
+    var prevState = cardState;
+    cardState = (cardState + 1) % 3;
+
+    // Swap image
+    cardImg.src = cardPhotos[cardState];
+
+    // Swap bio panels
+    var prevPanel = document.getElementById(bioPanelIds[prevState]);
+    var nextPanel = document.getElementById(bioPanelIds[cardState]);
+    if (prevPanel) prevPanel.classList.remove('active');
+    if (nextPanel) nextPanel.classList.add('active');
+
+    syncCardUI(cardState);
+
+    // Step 3: Snap to -90deg (no transition), then animate back to 0
+    cardInner.classList.remove('flip-out');
+    cardInner.classList.add('flip-in');
+
+    // Step 4: Force reflow then add transition back to 0
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        cardInner.classList.remove('flip-in');
+      });
+    });
+
+  }, 350); // matches flip-out transition duration
+}
+
+/* Jump directly to a specific identity state via dot click */
+function goToCardState(target) {
+  if (target === cardState) return;
+  var cardInner = document.getElementById('authorCardInner');
+  var cardImg   = document.getElementById('authorCardImg');
+  if (!cardInner || !cardImg) return;
+
+  cardInner.classList.add('flip-out');
+
+  setTimeout(function () {
+    var prevState = cardState;
+    cardState = target;
+
+    cardImg.src = cardPhotos[cardState];
+
+    var prevPanel = document.getElementById(bioPanelIds[prevState]);
+    var nextPanel = document.getElementById(bioPanelIds[cardState]);
+    if (prevPanel) prevPanel.classList.remove('active');
+    if (nextPanel) nextPanel.classList.add('active');
+
+    syncCardUI(cardState);
+
+    cardInner.classList.remove('flip-out');
+    cardInner.classList.add('flip-in');
+
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        cardInner.classList.remove('flip-in');
+      });
+    });
+  }, 350);
+}
+
 
 // Mobile Menu Toggle
 const hamburger = document.getElementById('hamburger');
@@ -283,6 +563,24 @@ function initParticles() {
     mouse.y = -1000;
   });
 
+  // Touch interaction — so fingers attract/repel particles on mobile & tablet
+  document.addEventListener('touchstart', (e) => {
+    const t = e.touches[0];
+    mouse.x = t.clientX;
+    mouse.y = t.clientY;
+    mouseIdleFrames = 0;
+  }, { passive: true });
+  document.addEventListener('touchmove', (e) => {
+    const t = e.touches[0];
+    mouse.x = t.clientX;
+    mouse.y = t.clientY;
+    mouseIdleFrames = 0;
+  }, { passive: true });
+  document.addEventListener('touchend', () => {
+    // Keep last position so idle-attract kicks in after finger lifts
+    mouseIdleFrames = 0;
+  }, { passive: true });
+
   // Track the bounding box of the hero typography so fireflies can cluster there
   let titleRect = { x: width/2, y: height/2, width: 200, height: 100 };
   function updateTitleRect() {
@@ -306,14 +604,18 @@ function initParticles() {
   
   class Firefly {
     constructor() {
+      const isMobile = width < 768;
       this.x = Math.random() * width;
       this.y = Math.random() * height;
-      this.vx = (Math.random() - 0.5) * 1.2;
-      this.vy = (Math.random() - 0.5) * 1.2;
+      // Slower drift on small screens so swarm looks deliberate, not frantic
+      const spd = isMobile ? 0.7 : 1.0;
+      this.vx = (Math.random() - 0.5) * 1.2 * spd;
+      this.vy = (Math.random() - 0.5) * 1.2 * spd;
       
       // 15% of the swarm are highly-detailed insects, but all are the same small size
       this.isHero = Math.random() < 0.15;
-      this.radius = Math.random() * 1.5 + 0.5;
+      // Slightly larger radius on mobile so they show up on high-DPI screens
+      this.radius = Math.random() * (isMobile ? 2.0 : 1.5) + (isMobile ? 0.8 : 0.5);
       
       this.blinkPhase = Math.random() * Math.PI * 2;
       this.blinkSpeed = Math.random() * 0.02 + 0.01;
@@ -567,9 +869,16 @@ function initParticles() {
   function init() {
     particles = [];
     butterflies = [];
-    
-    let numParticles = Math.floor((width * height) / (width < 768 ? 15000 : 6000)); // Reduce on mobile
-    for(let i=0; i<numParticles; i++) {
+
+    const isMobile = width < 768;
+    const isTablet = width < 1024;
+    // Generous counts so mobile/tablet feel alive too
+    // Mobile: ~60–80 | Tablet: ~120–160 | Desktop: ~300–400
+    const divisor = isMobile ? 6500 : isTablet ? 6000 : 5500;
+    const minCount = isMobile ? 65 : isTablet ? 110 : 160;
+    let numParticles = Math.max(minCount, Math.floor((width * height) / divisor));
+
+    for(let i = 0; i < numParticles; i++) {
       particles.push(new Firefly());
     }
     
@@ -599,3 +908,431 @@ function initParticles() {
   setTimeout(updateTitleRect, 500); // Initial calculate
   animateParticles();
 }
+
+// =========================================================================
+// FILM POLAROID GALLERY — data + builder + lightbox
+// =========================================================================
+const galleryItems = [
+  { src: 'assets/gallery/IMG_20250224_202511836.jpg', type: 'image', label: 'Live Show' },
+  { src: 'assets/gallery/IMG_20250401_030742785.jpg', type: 'image', label: 'Stage Visual' },
+  { src: 'assets/gallery/IMG_20250417_201520473.jpg', type: 'image', label: 'LED Install' },
+  { src: 'assets/gallery/IMG_20250425_070034344.jpg', type: 'image', label: 'Live Event' },
+  { src: 'assets/gallery/IMG_20250505_215246239.jpg', type: 'image', label: 'Showcase' },
+  { src: 'assets/gallery/IMG_20250517_150910200.jpg', type: 'image', label: 'Stage Prep' },
+  { src: 'assets/gallery/IMG_20250620_145308928.jpg', type: 'image', label: 'System Setup' },
+  { src: 'assets/gallery/IMG_20250620_191405996.jpg', type: 'image', label: 'Live Visuals' },
+  { src: 'assets/gallery/IMG_20250624_155151996.jpg', type: 'image', label: 'LED Stage' },
+  { src: 'assets/gallery/IMG_20250624_174715237.jpg', type: 'image', label: 'Event Tech' },
+  { src: 'assets/gallery/IMG_20250629_160229095.jpg', type: 'image', label: 'Live Show' },
+  { src: 'assets/gallery/IMG_20250704_131355815.jpg', type: 'image', label: 'LED Setup' },
+  { src: 'assets/gallery/IMG_20250712_083346611.jpg', type: 'image', label: 'Stage Visual' },
+  { src: 'assets/gallery/IMG_20250719_185457917.jpg', type: 'image', label: 'Live Event' },
+  { src: 'assets/gallery/IMG_20250808_120341946.jpg', type: 'image', label: 'Backstage' },
+  { src: 'assets/gallery/IMG_20250820_042417787~2.jpg', type: 'image', label: 'LED Stage' },
+  { src: 'assets/gallery/IMG_20250829_052245824.jpg', type: 'image', label: 'Live Show' },
+  { src: 'assets/gallery/IMG_20250829_074406078.jpg', type: 'image', label: 'System Config' },
+  { src: 'assets/gallery/IMG_20250911_132459781.jpg', type: 'image', label: 'Event Visual' },
+  { src: 'assets/gallery/IMG_20250913_212617876.jpg', type: 'image', label: 'Stage Setup' },
+  { src: 'assets/gallery/IMG_20250914_213427089.jpg', type: 'image', label: 'LED Event' },
+  { src: 'assets/gallery/IMG_20251008_184025198.jpg', type: 'image', label: 'Live Show' },
+  { src: 'assets/gallery/IMG_20251104_185816185.jpg', type: 'image', label: 'Biryani Queen' },
+  { src: 'assets/gallery/IMG_20251105_113216650.jpg', type: 'image', label: 'Stage Visual' },
+  { src: 'assets/gallery/IMG_20251107_090222923.jpg', type: 'image', label: 'LED Install' },
+  { src: 'assets/gallery/IMG_20251114_014455353.jpg', type: 'image', label: 'Live Event' },
+  { src: 'assets/gallery/IMG_20251129_203102576.jpg', type: 'image', label: 'Showcase' },
+  { src: 'assets/gallery/IMG_20251130_180532286.jpg', type: 'image', label: 'Setup' },
+  { src: 'assets/gallery/IMG_20251219_132721613.jpg', type: 'image', label: 'Live Ops' },
+  { src: 'assets/gallery/IMG_20251219_143221701.jpg', type: 'image', label: 'LED Wall' },
+  { src: 'assets/gallery/IMG_20251222_210358557.jpg', type: 'image', label: 'Stage Visuals' },
+  { src: 'assets/gallery/IMG_20251226_181609647.jpg', type: 'image', label: 'Live Show' },
+  { src: 'assets/gallery/IMG_20260104_033301763.jpg', type: 'image', label: 'LED Event' },
+  { src: 'assets/gallery/IMG_20260104_170619331.jpg', type: 'image', label: 'Stage Setup' },
+  { src: 'assets/gallery/IMG_20260123_140206939.jpg', type: 'image', label: 'Live Visual' },
+  { src: 'assets/gallery/IMG_20260123_141956171.jpg', type: 'image', label: 'System Ops' },
+  { src: 'assets/gallery/IMG_20260123_143758530.jpg', type: 'image', label: 'LED Stage' },
+  { src: 'assets/gallery/IMG_20260124_154844925.jpg', type: 'image', label: 'Live Show' },
+  { src: 'assets/gallery/IMG_20260124_171912159.jpg', type: 'image', label: 'Event Visual' },
+  { src: 'assets/gallery/IMG_20260129_150012413.jpg', type: 'image', label: 'Stage Prep' },
+  { src: 'assets/gallery/IMG_20260130_093457074.jpg', type: 'image', label: 'Setup' },
+  { src: 'assets/gallery/IMG_20260202_172303925.jpg', type: 'image', label: 'Peruma Talks' },
+  { src: 'assets/gallery/IMG_20260202_202634576.jpg', type: 'image', label: 'Live Event' },
+  { src: 'assets/gallery/IMG_20260204_011410940.jpg', type: 'image', label: 'LED Wall' },
+  { src: 'assets/gallery/IMG_20260206_231913959.jpg', type: 'image', label: 'Stage Visual' },
+  { src: 'assets/gallery/IMG_20260212_000147137.jpg', type: 'image', label: 'LED Event' },
+  { src: 'assets/gallery/IMG_20260212_144338064.jpg', type: 'image', label: 'PXL Setup' },
+  { src: 'assets/gallery/IMG_20260212_170714121.jpg', type: 'image', label: 'Stage Show' },
+  { src: 'assets/gallery/IMG_20260212_191218382.jpg', type: 'image', label: 'Nakshatra' },
+  { src: 'assets/gallery/IMG_20260212_191526739.jpg', type: 'image', label: 'Nakshatra 2025' },
+  { src: 'assets/gallery/IMG_20260214_185147392.jpg', type: 'image', label: 'Live Visual' },
+  { src: 'assets/gallery/IMG_20260218_121754670.jpg', type: 'image', label: 'Stage Setup' },
+  { src: 'assets/gallery/IMG_20260219_234453166.jpg', type: 'image', label: 'LED Show' },
+  { src: 'assets/gallery/IMG_20260306_112015277.jpg', type: 'image', label: 'Live Event' },
+  { src: 'assets/gallery/IMG_20260307_081805186.jpg', type: 'image', label: 'Stage Visual' },
+  { src: 'assets/gallery/IMG_20260307_081941628.jpg', type: 'image', label: 'LED Wall' },
+  { src: 'assets/gallery/IMG_20260312_234852765.jpg', type: 'image', label: 'Live Ops' },
+  { src: 'assets/gallery/IMG_20260315_203120177.jpg', type: 'image', label: 'Stage Show' },
+  { src: 'assets/gallery/IMG_20260318_115444058.jpg', type: 'image', label: 'LED Event' },
+  { src: 'assets/gallery/IMG_20260324_162245369.jpg', type: 'image', label: 'Visual Ops' },
+  { src: 'assets/gallery/IMG_20260327_180844514.jpg', type: 'image', label: 'Stage Setup' },
+  { src: 'assets/gallery/IMG_20260331_065653320.jpg', type: 'image', label: 'LED Show' },
+  { src: 'assets/gallery/IMG_20260502_151324704.jpg', type: 'image', label: 'Live Event' },
+  { src: 'assets/gallery/PXL_20250714_195041317.jpg',  type: 'image', label: 'System Ops' },
+  { src: 'assets/gallery/PXL_20250927_220203784.jpg',  type: 'image', label: 'Live Visual' },
+  { src: 'assets/gallery/VID_20250524_060726826.mp4',  type: 'video', label: 'Live Footage' },
+  { src: 'assets/gallery/VID_20250630_195411301.mp4',  type: 'video', label: 'Live Footage' }
+];
+
+const polaroidRotations = [-2.5, 1.8, -1.2, 3.1, -3.5, 2.2, -1.7, 2.8, -3.2, 1.5, -2.1, 3.4, -1.9, 2.6, -3.0, 1.3];
+let lightboxCurrentIndex = 0;
+
+/* Build two infinite-rolling film tracks (duplicated for seamless loop) */
+function buildFilmStrip() {
+  ['filmTrack1', 'filmTrack2'].forEach((trackId, trackIdx) => {
+    const track = document.getElementById(trackId);
+    if (!track) return;
+
+    // Duplicate items for seamless infinite loop (-50% translate trick)
+    const doubled = [...galleryItems, ...galleryItems];
+
+    doubled.forEach((item, i) => {
+      const realIndex = i % galleryItems.length;
+      const frame = document.createElement('div');
+      frame.className = 'film-frame';
+
+      if (item.type === 'video') {
+        frame.innerHTML = `
+          <video muted playsinline preload="none" src="${item.src}"></video>
+          <div class="film-play-badge">
+            <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M8 5v14l11-7z"/></svg>
+          </div>
+          <div class="film-frame-label">${item.label}</div>`;
+      } else {
+        frame.innerHTML = `
+          <img src="${item.src}" loading="lazy" alt="${item.label}" draggable="false">
+          <div class="film-frame-label">${item.label}</div>`;
+      }
+
+      frame.addEventListener('click', () => openGalleryLightbox(realIndex));
+      track.appendChild(frame);
+    });
+  });
+}
+
+/* Fill film rails with sprocket-hole divs */
+function buildFilmRails() {
+  ['filmRailTop', 'filmRailMid', 'filmRailBot'].forEach(id => {
+    const rail = document.getElementById(id);
+    if (!rail) return;
+    const count = Math.ceil(window.innerWidth / 26) + 12;
+    for (let i = 0; i < count; i++) {
+      const hole = document.createElement('div');
+      hole.className = 'sprocket-hole';
+      rail.appendChild(hole);
+    }
+  });
+}
+
+/* Drag-to-scroll — REMOVED (auto-rolling strip doesn't need drag scroll) */
+
+/* Open lightbox */
+function openGalleryLightbox(index) {
+  lightboxCurrentIndex = index;
+  renderLightboxContent();
+  const lb = document.getElementById('galleryLightbox');
+  if (lb) { lb.classList.add('open'); document.body.style.overflow = 'hidden'; }
+}
+
+/* Render image or video for current index */
+function renderLightboxContent() {
+  const item   = galleryItems[lightboxCurrentIndex];
+  const media   = document.getElementById('lightboxMedia');
+  const caption = document.getElementById('lightboxCaption');
+
+  const prevVid = media.querySelector('video');
+  if (prevVid) prevVid.pause();
+  media.innerHTML = '';
+
+  if (item.type === 'video') {
+    const v = document.createElement('video');
+    v.controls = true; v.autoplay = true; v.playsInline = true;
+    v.src = item.src;
+    media.appendChild(v);
+  } else {
+    const img = document.createElement('img');
+    img.src = item.src; img.alt = item.label;
+    media.appendChild(img);
+  }
+
+  if (caption) {
+    caption.textContent = `${item.label}  ·  ${lightboxCurrentIndex + 1} / ${galleryItems.length}`;
+  }
+}
+
+/* Close lightbox */
+function closeGalleryLightbox() {
+  const lb    = document.getElementById('galleryLightbox');
+  const media = document.getElementById('lightboxMedia');
+  if (!lb) return;
+  lb.classList.remove('open');
+  document.body.style.overflow = '';
+  const v = media ? media.querySelector('video') : null;
+  if (v) v.pause();
+  setTimeout(() => { if (media) media.innerHTML = ''; }, 300);
+}
+
+/* Wire up gallery controls on DOMContentLoaded */
+document.addEventListener('DOMContentLoaded', () => {
+  buildFilmStrip();
+  buildFilmRails();
+
+  const closeBtn = document.getElementById('lightboxClose');
+  const prevBtn  = document.getElementById('lightboxPrev');
+  const nextBtn  = document.getElementById('lightboxNext');
+  const lb       = document.getElementById('galleryLightbox');
+
+  if (closeBtn) closeBtn.addEventListener('click', closeGalleryLightbox);
+
+  if (prevBtn) prevBtn.addEventListener('click', () => {
+    lightboxCurrentIndex = (lightboxCurrentIndex - 1 + galleryItems.length) % galleryItems.length;
+    renderLightboxContent();
+  });
+  if (nextBtn) nextBtn.addEventListener('click', () => {
+    lightboxCurrentIndex = (lightboxCurrentIndex + 1) % galleryItems.length;
+    renderLightboxContent();
+  });
+
+  if (lb) lb.addEventListener('click', e => { if (e.target === lb) closeGalleryLightbox(); });
+
+  document.addEventListener('keydown', e => {
+    const l = document.getElementById('galleryLightbox');
+    if (!l || !l.classList.contains('open')) return;
+    if (e.key === 'Escape') closeGalleryLightbox();
+    if (e.key === 'ArrowLeft') {
+      lightboxCurrentIndex = (lightboxCurrentIndex - 1 + galleryItems.length) % galleryItems.length;
+      renderLightboxContent();
+    }
+    if (e.key === 'ArrowRight') {
+      lightboxCurrentIndex = (lightboxCurrentIndex + 1) % galleryItems.length;
+      renderLightboxContent();
+    }
+  });
+});
+
+
+// =========================================================================
+// SCROLL PROGRESS BAR
+// =========================================================================
+(function initScrollProgress() {
+  const bar = document.getElementById('scroll-progress-bar');
+  if (!bar) return;
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY || document.documentElement.scrollTop;
+    const total    = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (total > 0 ? (scrolled / total) * 100 : 0) + '%';
+  }, { passive: true });
+})();
+
+
+// =========================================================================
+// WRITING JOURNEY TIMELINE — SCROLL REVEAL
+// =========================================================================
+(function initJourneyReveal() {
+  document.querySelectorAll('.js-reveal-left, .js-reveal-right').forEach(el => {
+    const fromLeft = el.classList.contains('js-reveal-left');
+    gsap.to(el, {
+      opacity: 1,
+      x: 0,
+      duration: 0.75,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: el,
+        start: 'top 88%',
+        toggleActions: 'play none none none'
+      }
+    });
+  });
+})();
+
+
+// =========================================================================
+// NEWSLETTER FORM
+// =========================================================================
+(function initNewsletter() {
+  const form    = document.getElementById('nlForm');
+  const success = document.getElementById('nlSuccess');
+  const btn     = document.getElementById('nlSubmit');
+  if (!form || !success || !btn) return;
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    btn.textContent = 'Sending…';
+    btn.disabled    = true;
+    try {
+      const res = await fetch(form.action, {
+        method:  'POST',
+        body:    new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (res.ok) {
+        form.style.display      = 'none';
+        success.style.display   = 'flex';
+      } else {
+        throw new Error('server');
+      }
+    } catch {
+      // Graceful fallback — open mailto
+      const email = document.getElementById('nlEmail').value;
+      window.location.href =
+        'mailto:thisissamayh@gmail.com?subject=Newsletter%20Subscription&body=Please%20add%20' +
+        encodeURIComponent(email) + '%20to%20your%20newsletter.';
+      btn.textContent = 'Subscribe';
+      btn.disabled    = false;
+    }
+  });
+})();
+
+
+// =========================================================================
+// AMBIENT CINEMATIC ATMOSPHERE  — Web Audio API
+// =========================================================================
+(function initAmbientSound() {
+  const btn = document.getElementById('ambientToggle');
+  if (!btn) return;
+
+  let ctx         = null;
+  let master      = null;
+  let isPlaying   = false;
+  let allNodes    = [];
+
+  function buildSoundscape() {
+    ctx    = new (window.AudioContext || window.webkitAudioContext)();
+    master = ctx.createGain();
+    master.gain.value = 0;
+    master.connect(ctx.destination);
+
+    // ── 1. SYNTHETIC REVERB (Lush & Massive) ───────────────────────────
+    const reverb = ctx.createConvolver();
+    const length = ctx.sampleRate * 4.0; // 4 second decay
+    const impulse = ctx.createBuffer(2, length, ctx.sampleRate);
+    for (let i = 0; i < 2; i++) {
+      const channel = impulse.getChannelData(i);
+      for (let j = 0; j < length; j++) {
+        // Exponential decay of white noise
+        channel[j] = (Math.random() * 2 - 1) * Math.pow(1 - j / length, 4);
+      }
+    }
+    reverb.buffer = impulse;
+    
+    const reverbGain = ctx.createGain();
+    reverbGain.gain.value = 1.5; // High wet mix
+    reverb.connect(reverbGain);
+    reverbGain.connect(master);
+
+    // ── 2. DEEP DRONE CHORD (A Sus2/4 style) ───────────────────────────
+    // Frequencies: A2 (110), E3 (164.81), B3 (246.94), D4 (293.66)
+    const freqs = [110.0, 164.81, 246.94, 293.66];
+    
+    freqs.forEach((freq, idx) => {
+      // Main tone (Triangle for warmth)
+      const osc = ctx.createOscillator();
+      osc.type = 'triangle';
+      osc.frequency.value = freq;
+      
+      // Slight detune for width
+      const detuneOsc = ctx.createOscillator();
+      detuneOsc.type = 'sine';
+      detuneOsc.frequency.value = freq * 1.005;
+
+      const voiceGain = ctx.createGain();
+      voiceGain.gain.value = 0; // modulated by LFO
+
+      // Slow LFO to pulse the volume of this specific note
+      const lfo = ctx.createOscillator();
+      lfo.type = 'sine';
+      lfo.frequency.value = 0.02 + (idx * 0.007); // ~15-30 second cycles
+      
+      const lfoScale = ctx.createGain();
+      // Base volume + LFO modulation
+      lfoScale.gain.value = 0.06; 
+      
+      lfo.connect(lfoScale);
+      lfoScale.connect(voiceGain.gain);
+      
+      osc.connect(voiceGain);
+      detuneOsc.connect(voiceGain);
+      
+      // Route everything through the massive reverb
+      voiceGain.connect(reverb);
+      
+      // And a little bit of dry signal directly to master
+      const dryGain = ctx.createGain();
+      dryGain.gain.value = 0.4;
+      voiceGain.connect(dryGain);
+      dryGain.connect(master);
+      
+      osc.start();
+      detuneOsc.start();
+      lfo.start();
+      allNodes.push(osc, detuneOsc, lfo);
+    });
+
+    // ── 3. LOW TAPE HISS / SPACE DUST ──────────────────────────────────
+    const SR = ctx.sampleRate;
+    const bufLen = SR * 2;
+    const noiseBuf = ctx.createBuffer(1, bufLen, SR);
+    const data = noiseBuf.getChannelData(0);
+    let lastOut = 0;
+    for (let i = 0; i < bufLen; i++) {
+      const white = Math.random() * 2 - 1;
+      lastOut = (lastOut + 0.02 * white) / 1.02; // Brown noise
+      data[i] = lastOut * 1.5; 
+    }
+    const noiseSrc = ctx.createBufferSource();
+    noiseSrc.buffer = noiseBuf;
+    noiseSrc.loop = true;
+
+    const noiseFilter = ctx.createBiquadFilter();
+    noiseFilter.type = 'lowpass';
+    noiseFilter.frequency.value = 1500; 
+
+    const noiseGain = ctx.createGain();
+    noiseGain.gain.value = 0.04;
+
+    noiseSrc.connect(noiseFilter);
+    noiseFilter.connect(noiseGain);
+    noiseGain.connect(master);
+    noiseSrc.start();
+    allNodes.push(noiseSrc);
+  }
+
+  function fadeIn() {
+    master.gain.cancelScheduledValues(ctx.currentTime);
+    master.gain.setValueAtTime(master.gain.value, ctx.currentTime);
+    master.gain.linearRampToValueAtTime(1, ctx.currentTime + 5); // very slow fade in
+  }
+  
+  function fadeOut(cb) {
+    master.gain.cancelScheduledValues(ctx.currentTime);
+    master.gain.setValueAtTime(master.gain.value, ctx.currentTime);
+    master.gain.linearRampToValueAtTime(0, ctx.currentTime + 4);
+    if (cb) setTimeout(cb, 4100);
+  }
+
+  btn.addEventListener('click', () => {
+    if (!ctx) buildSoundscape();
+    if (ctx.state === 'suspended') ctx.resume();
+
+    if (!isPlaying) {
+      isPlaying = true;
+      btn.classList.add('active');
+      btn.title = 'Mute cinematic ambience';
+      fadeIn();
+    } else {
+      isPlaying = false;
+      btn.classList.remove('active');
+      btn.title = 'Play cinematic ambience';
+      fadeOut(() => ctx && ctx.suspend());
+    }
+  });
+})();
+

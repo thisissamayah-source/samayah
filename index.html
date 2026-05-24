@@ -4,15 +4,79 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sathyaraj Natarajan — Visual Engineer</title>
-  <meta name="description" content="Official portfolio of author Sathyaraj Natarajan — 6 books across poetry, sci-fi, mystery and mythological epic."/>
-  
+  <meta name="description" content="Official portfolio of Sathyaraj Natarajan — author of 7 works spanning poetry, science fiction, psychological fiction, mythology, and research awareness."/>
+
+  <!-- SEO & Social -->
+  <meta name="robots" content="index, follow"/>
+  <meta name="author" content="Sathyaraj Natarajan"/>
+  <meta name="keywords" content="Sathyaraj Natarajan, Indian author, Amma's Love, Looped, Echoes of Veloria, Between Noise and Silence, Nizhal, Uttara, Red Wave, science fiction, poetry, mythology, LED visual engineer"/>
+  <!-- Open Graph -->
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://sathyarajnatarajan.com/"/>
+  <meta property="og:title" content="Sathyaraj Natarajan — Author · Visual Engineer"/>
+  <meta property="og:description" content="Official portfolio of Sathyaraj Natarajan — author of 7 works spanning poetry, sci-fi, psychological fiction, mythology, and research awareness."/>
+  <meta property="og:image" content="https://sathyarajnatarajan.com/assets/logo.png"/>
+  <meta property="og:site_name" content="Sathyaraj Natarajan"/>
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:site" content="@thisissamayah"/>
+  <meta name="twitter:creator" content="@thisissamayah"/>
+  <meta name="twitter:title" content="Sathyaraj Natarajan — Author · Visual Engineer"/>
+  <meta name="twitter:description" content="Author of 7 works spanning poetry, sci-fi, psychological fiction, mythology, and research awareness."/>
+  <meta name="twitter:image" content="https://sathyarajnatarajan.com/assets/logo.png"/>
+  <link rel="canonical" href="https://sathyarajnatarajan.com/"/>
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Sathyaraj Natarajan",
+    "alternateName": "Samayah",
+    "url": "https://sathyarajnatarajan.com",
+    "email": "thisissamayh@gmail.com",
+    "description": "Author, Visual Engineer, and Film Restoration specialist from Kerala, India.",
+    "sameAs": [
+      "https://www.instagram.com/thisissamayah",
+      "https://www.linkedin.com/in/sathyarajnatarajan/",
+      "https://www.youtube.com/sathyaraj_natarajan",
+      "https://www.x.com/thisissamayah"
+    ],
+    "jobTitle": ["Author", "Visual Engineer", "Film Restoration Specialist"],
+    "knowsAbout": ["Science Fiction", "Poetry", "Mythology", "LED Visual Engineering", "Film Restoration", "Menstrual Health Awareness"]
+  }
+  </script>
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Raleway:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Inter:wght@300;400;600&display=swap" rel="stylesheet"/>
   
-  <link rel="stylesheet" href="styles.css"/>
+  <link rel="stylesheet" href="styles.css?v=15"/>
 </head>
 <body class="loading">
+
+
+<!-- SCROLL PROGRESS BAR -->
+<div id="scroll-progress-bar"></div>
+
+<!-- AMBIENT SOUND TOGGLE -->
+<button id="ambientToggle" class="ambient-btn" title="Play cinematic ambience" aria-label="Toggle cinematic ambience">
+  <span class="ambient-rings">
+    <span class="amb-ring r1"></span>
+    <span class="amb-ring r2"></span>
+    <span class="amb-ring r3"></span>
+  </span>
+  <!-- Firefly / sound icon -->
+  <svg class="amb-icon-off" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+    <line x1="23" y1="9" x2="17" y2="15"/>
+    <line x1="17" y1="9" x2="23" y2="15"/>
+  </svg>
+  <svg class="amb-icon-on" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+  </svg>
+</button>
 
 <!-- PAGE BACKGROUND (Color fades dynamically) -->
 <div id="dynamic-bg" class="dynamic-bg"></div>
@@ -20,12 +84,50 @@
 <!-- PARTICLE CANVAS (Neural Network / Fireflies) -->
 <canvas id="particle-canvas" class="particle-canvas"></canvas>
 
-<!-- LOADER -->
+<!-- LOADER (Cinematic) -->
 <div id="loader">
-  <div class="loader-content">
-    <div class="loader-text">SATHYARAJ NATARAJAN</div>
-    <div class="loader-bar"><div class="loader-progress"></div></div>
+  <!-- Film grain texture -->
+  <div class="loader-grain"></div>
+  <!-- Projector scan line -->
+  <div class="loader-scan"></div>
+  <!-- Clapperboard panels that split open -->
+  <div class="clapper-panel clapper-top"></div>
+  <div class="clapper-panel clapper-bot"></div>
+  <!-- Center stage -->
+  <div class="loader-center">
+    <!-- Rotating chariot wheel -->
+    <div class="loader-ring">
+      <svg width="84" height="84" viewBox="0 0 84 84" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="42" cy="42" r="38" stroke="rgba(212,175,55,0.4)" stroke-width="3" />
+        <circle cx="42" cy="42" r="34" stroke="rgba(212,175,55,0.8)" stroke-width="1" />
+        <circle cx="42" cy="42" r="8" fill="#D4AF37" />
+        <circle cx="42" cy="42" r="3" fill="#111" />
+        <g stroke="rgba(212,175,55,0.6)" stroke-width="2">
+          <line x1="42" y1="10" x2="42" y2="34" />
+          <line x1="42" y1="50" x2="42" y2="74" />
+          <line x1="10" y1="42" x2="34" y2="42" />
+          <line x1="50" y1="42" x2="74" y2="42" />
+          <line x1="19.4" y1="19.4" x2="36.3" y2="36.3" />
+          <line x1="47.7" y1="47.7" x2="64.6" y2="64.6" />
+          <line x1="19.4" y1="64.6" x2="36.3" y2="47.7" />
+          <line x1="47.7" y1="36.3" x2="64.6" y2="19.4" />
+        </g>
+      </svg>
+    </div>
+    <!-- Name (letters injected by JS) -->
+    <div class="loader-name">
+      <div class="loader-row-1" id="loaderRow1"></div>
+      <div class="loader-row-2" id="loaderRow2"></div>
+    </div>
+    <!-- Tagline -->
+    <p class="loader-tagline">Visual Engineer &nbsp;&middot;&nbsp; Author &nbsp;&middot;&nbsp; Film Restoration</p>
+    <!-- LED progress bar (dots injected by JS) -->
+    <div class="loader-led-bar" id="loaderLedBar"></div>
+    <!-- Numeric counter -->
+    <div class="loader-counter" id="loaderCounter">000</div>
   </div>
+  <!-- Gold flash for exit -->
+  <div class="loader-flash" id="loaderFlash"></div>
 </div>
 
 <!-- NAV -->
@@ -34,7 +136,8 @@
   <div class="nav-links">
     <a href="#" id="navHome">Home</a>
     <a href="#books-anchor" id="navBooks">Books</a>
-    <a href="#other-works" id="navOtherWorks">Other Works</a>
+    <a href="#other-works" id="navOtherWorks">Creative Archives</a>
+    <a href="#journey" id="navJourney">Journey</a>
     <a href="#contact" id="navContact">Contact</a>
   </div>
   <button class="hamburger" id="hamburger" aria-label="Toggle menu">
@@ -81,17 +184,33 @@
       <div class="book-info">
         <span class="b-num">01</span>
         <span class="b-genre">Classic Poetry</span>
-        <h2 class="b-title">AMMA'S LOVE</h2>
-        <p class="b-synopsis">The foundation of Sathyaraj's literary universe. A poignant lyrical tribute to motherly devotion set against the green, rain-swept landscape of Kerala — where every poem breathes with the warmth of a mother's embrace. <span class="extended-text">It explores the universal themes of loss, memory, and the enduring strength of the maternal bond, painting vivid imagery of monsoons and childhood nostalgia.</span></p>
+        <h2 class="b-title">AMMA'S LOVE POETRY</h2>
+        <p class="b-tagline">The beginning of everything.</p>
+        <p class="b-synopsis">Amma's Love Poetry was not written as a project or a publishing goal — it was written from life. The book is deeply inspired by my own journey, memories, and the bond I share with my mother. Through poems filled with love, gratitude, emotion, and reflection, the collection becomes more than poetry; it becomes a personal story told through verses. <span class="extended-text">Every page carries fragments of emotions that many children silently hold for their mothers — the sacrifices they witness, the strength they admire, and the love that often remains unspoken. Looking back, this book was the first step into my journey as an author and the foundation from which every future story began.</span></p>
+        <p class="b-quote">Love is not always spoken — it lives in what a mother silently endures.</p>
         <div class="b-actions">
           <a href="javascript:void(0)" class="b-btn read-more-btn">Read More</a>
-          <a href="https://amazon.com" target="_blank" class="b-btn buy-btn">Buy Now</a>
+          <div class="buy-dropdown-wrap">
+            <button class="b-btn buy-btn buy-dropdown-trigger" type="button">Buy Now</button>
+            <div class="buy-dropdown">
+              <a href="https://www.amazon.in/AMMAS-LOVE-Journey-Sathyaraj-Natarajan-ebook/dp/B0BVGFJZBZ/?_encoding=UTF8" target="_blank" class="buy-option">Amazon <span class="buy-option-arrow">↗</span></a>
+              <a href="https://www.flipkart.com/amma-s-love-poetic-journey/p/itm24f3a779b6cc1?pid=9798889517276&affid=editornoti" target="_blank" class="buy-option">Flipkart <span class="buy-option-arrow">↗</span></a>
+              <a href="https://notionpress.com/in/read/amma-s-love" target="_blank" class="buy-option">Notion Press <span class="buy-option-arrow">↗</span></a>
+            </div>
+          </div>
         </div>
       </div>
       <div class="book-visual">
         <div class="book-tilt-wrap">
-          <img src="assets/1.jpg" alt="Amma's Love" class="book-cover-img" />
-          <div class="book-shadow"></div>
+          <div class="book-3d" style="--spine-clr:#3d2a18">
+            <div class="book-front">
+              <img src="assets/1.jpg" alt="Amma's Love" class="book-cover-img" />
+              <div class="book-sheen"></div>
+            </div>
+            <div class="book-spine"><span class="spine-num">01</span></div>
+            <div class="book-pages"></div>
+          </div>
+          <div class="book-floor-shadow"></div>
         </div>
       </div>
     </div>
@@ -102,16 +221,31 @@
         <span class="b-num">02</span>
         <span class="b-genre">Science Fiction</span>
         <h2 class="b-title">LOOPED</h2>
-        <p class="b-synopsis">When quantum accelerator labs trigger a local loop in space-time, researchers and a mysterious interstellar traveler must decode the loop before history collapses. A breathtaking debut that bends causality itself. <span class="extended-text">As paradoxes begin to unravel the reality around them, the team races against time—literally—to prevent a temporal cascade that could erase their very existence.</span></p>
+        <p class="b-tagline">Where imagination turned into a universe.</p>
+        <p class="b-synopsis">The origins of Looped began long before the book itself existed. It was born during conversations with my friends while we were planning ideas for a short film. What started as discussions, theories, imagination, and late-night creative exchanges slowly transformed into something larger. <span class="extended-text">At first, Looped was imagined as a standalone story. But while building the world of the first book, the universe kept expanding. New ideas appeared, hidden possibilities emerged, and what was once a single concept slowly evolved into a larger science-fiction saga. Driven by curiosity for science, mystery, and the unknown, Looped became my entry into speculative fiction and the beginning of a world that continues to grow beyond its original vision.</span></p>
+        <p class="b-quote">What if time is not a river moving forward, but an ocean with no shore?</p>
         <div class="b-actions">
           <a href="javascript:void(0)" class="b-btn read-more-btn">Read More</a>
-          <a href="https://amazon.com" target="_blank" class="b-btn buy-btn">Buy Now</a>
+          <div class="buy-dropdown-wrap">
+            <button class="b-btn buy-btn buy-dropdown-trigger" type="button">Buy Now</button>
+            <div class="buy-dropdown">
+              <a href="https://amzn.in/d/dBEmMcn" target="_blank" class="buy-option">Amazon <span class="buy-option-arrow">↗</span></a>
+              <a href="https://www.abebooks.co.uk/9798338887967/LOOPED-%E2%80%98A-Time-Bending-Odyssey%E2%80%99-1/plp" target="_blank" class="buy-option">AbeBooks <span class="buy-option-arrow">↗</span></a>
+            </div>
+          </div>
         </div>
       </div>
       <div class="book-visual">
         <div class="book-tilt-wrap">
-          <img src="assets/2.jpg" alt="Looped" class="book-cover-img" />
-          <div class="book-shadow"></div>
+          <div class="book-3d" style="--spine-clr:#1a2d4a">
+            <div class="book-front">
+              <img src="assets/2.jpg" alt="Looped" class="book-cover-img" />
+              <div class="book-sheen"></div>
+            </div>
+            <div class="book-spine"><span class="spine-num">02</span></div>
+            <div class="book-pages"></div>
+          </div>
+          <div class="book-floor-shadow"></div>
         </div>
       </div>
     </div>
@@ -120,18 +254,34 @@
     <div class="book-row" data-bg="#081418">
       <div class="book-info">
         <span class="b-num">03</span>
-        <span class="b-genre">Sci-Fi Fantasy</span>
-        <h2 class="b-title">ECHOES OF VELORIA</h2>
-        <p class="b-synopsis">Surviving the first loop, the crew is cast onto Veloria — a world of plasma oceans and ancient spires transmitting signals that hold the fabric of space-time in check. The journey deepens across dimensions. <span class="extended-text">Here, logic defies itself, and the ghosts of parallel dimensions whisper secrets of an impending cosmic collapse. They must decipher the alien architecture before the echoes consume them.</span></p>
+        <span class="b-genre">Sci-Fi Fantasy · Looped Universe</span>
+        <h2 class="b-title">LOOPED: ECHOES OF VELORIA</h2>
+        <p class="b-tagline">The world expands. The mystery deepens.</p>
+        <p class="b-synopsis">With Looped: Echoes of Veloria, the universe built in the first book grows further into unexplored territory. What once began as a single idea evolves into a larger mythology filled with hidden truths, unanswered questions, and deeper layers of world-building. <span class="extended-text">This book represents the next stage of the journey — not only for the story itself but also for me as a writer. It allowed me to push beyond the foundations of the first novel and explore a wider creative landscape where mystery, imagination, and possibility continue to collide.</span></p>
+        <p class="b-quote">Every echo carries the ghost of something that once dared to be real.</p>
         <div class="b-actions">
           <a href="javascript:void(0)" class="b-btn read-more-btn">Read More</a>
-          <a href="https://amazon.com" target="_blank" class="b-btn buy-btn">Buy Now</a>
+          <div class="buy-dropdown-wrap">
+            <button class="b-btn buy-btn buy-dropdown-trigger" type="button">Buy Now</button>
+            <div class="buy-dropdown">
+              <a href="https://amzn.in/d/08LIlyb" target="_blank" class="buy-option">Amazon <span class="buy-option-arrow">↗</span></a>
+              <a href="https://www.thenile.com.au/books/sathyaraj-natarajan/the-echoes-of-veloria/9789334254495" target="_blank" class="buy-option">The Nile <span class="buy-option-arrow">↗</span></a>
+              <a href="https://www.walmart.com/ip/Echoes-of-Veloria-Paperback-9789334254495/15997203790" target="_blank" class="buy-option">Walmart <span class="buy-option-arrow">↗</span></a>
+            </div>
+          </div>
         </div>
       </div>
       <div class="book-visual">
         <div class="book-tilt-wrap">
-          <img src="assets/3.jpg" alt="Echoes of Veloria" class="book-cover-img" />
-          <div class="book-shadow"></div>
+          <div class="book-3d" style="--spine-clr:#142830">
+            <div class="book-front">
+              <img src="assets/3.jpg" alt="Echoes of Veloria" class="book-cover-img" />
+              <div class="book-sheen"></div>
+            </div>
+            <div class="book-spine"><span class="spine-num">03</span></div>
+            <div class="book-pages"></div>
+          </div>
+          <div class="book-floor-shadow"></div>
         </div>
       </div>
     </div>
@@ -141,17 +291,31 @@
       <div class="book-info">
         <span class="b-num">04</span>
         <span class="b-genre">Psychological Fiction</span>
-        <h2 class="b-title">BETWEEN NOISE & SILENCE</h2>
-        <p class="b-synopsis">A sound-recordist retreats to the silent backwaters of Kerala, escaping the overwhelming roar of city sound stages to face the inner echoes of his own fractured life. <span class="extended-text">In the stillness, he confronts unresolved grief and the haunting rhythm of his own heartbeat, realizing that true silence is the loudest sound of all.</span></p>
+        <h2 class="b-title">BETWEEN THE NOISE AND SILENCE</h2>
+        <p class="b-tagline">Inspired by life between work, people, and quiet moments.</p>
+        <p class="b-synopsis">This story comes from the spaces between reality and observation. Between the Noise and Silence draws inspiration from workplaces, colleagues, conversations, emotions, and moments that silently stay with us. Some experiences influenced me, some triggered thoughts, and some became questions that stayed in my mind. <span class="extended-text">The story is not a direct retelling of anyone's life. Instead, it blends inspiration from real environments and emotions with fictional elements to create a psychological slice-of-life journey. At its heart, the book explores people hidden behind everyday routines — their dreams, struggles, loneliness, ambitions, and the silence that exists beneath the noise of life.</span></p>
+        <p class="b-quote">Behind every ordinary face is an extraordinary story no one thinks to ask about.</p>
         <div class="b-actions">
           <a href="javascript:void(0)" class="b-btn read-more-btn">Read More</a>
-          <a href="https://amazon.com" target="_blank" class="b-btn buy-btn">Buy Now</a>
+          <div class="buy-dropdown-wrap">
+            <button class="b-btn buy-btn buy-dropdown-trigger" type="button">Buy Now</button>
+            <div class="buy-dropdown">
+              <a href="https://www.amazon.in/Between-Noise-Silence-Psychological-Slice-ebook/dp/B0GJ7713KV/?_encoding=UTF8" target="_blank" class="buy-option">Amazon <span class="buy-option-arrow">↗</span></a>
+            </div>
+          </div>
         </div>
       </div>
       <div class="book-visual">
         <div class="book-tilt-wrap">
-          <img src="assets/4.png" alt="Noise & Silence" class="book-cover-img" />
-          <div class="book-shadow"></div>
+          <div class="book-3d" style="--spine-clr:#1e2e1e">
+            <div class="book-front">
+              <img src="assets/4.png" alt="Noise &amp; Silence" class="book-cover-img" />
+              <div class="book-sheen"></div>
+            </div>
+            <div class="book-spine"><span class="spine-num">04</span></div>
+            <div class="book-pages"></div>
+          </div>
+          <div class="book-floor-shadow"></div>
         </div>
       </div>
     </div>
@@ -160,18 +324,27 @@
     <div class="book-row" data-bg="#161111">
       <div class="book-info">
         <span class="b-num">05</span>
-        <span class="b-genre">Mystery / Thriller</span>
+        <span class="b-genre">Folklore Horror · Upcoming</span>
         <h2 class="b-title">NIZHAL</h2>
-        <p class="b-synopsis">In the shadow of an ancient temple, a forgotten secret stirs. Nizhal weaves shadows, ancestral curses, and the unspoken fears that haunt the stone corridors of old Kerala. <span class="extended-text">When unexplained disappearances plague the village, a cynical detective and a local historian must decipher ancient palm-leaf manuscripts before the shadow claims its next victim.</span></p>
+        <p class="b-tagline">Folklore, fear, and stories whispered through childhood.</p>
+        <p class="b-synopsis">Nizhal is inspired by local folklore stories, village legends, and tales heard during childhood — stories passed from person to person, carrying mystery, fear, and imagination. The concept later evolved through discussions with friends and slowly merged with my own fictional perspective. <span class="extended-text">What began as conversations and memories transformed into something darker — blending folklore with horror and psychological elements. Nizhal aims to explore the shadows hidden inside stories we grew up hearing… and ask what happens when those shadows begin to take form.</span></p>
+        <p class="b-quote">The stories your grandmother whispered in the dark were warnings, not tales.</p>
         <div class="b-actions">
           <a href="javascript:void(0)" class="b-btn read-more-btn">Read More</a>
-          <a href="https://amazon.com" target="_blank" class="b-btn buy-btn">Buy Now</a>
+          <a href="javascript:void(0)" class="b-btn disabled">Coming Soon</a>
         </div>
       </div>
       <div class="book-visual">
         <div class="book-tilt-wrap">
-          <img src="assets/5.jpg" alt="Nizhal" class="book-cover-img" />
-          <div class="book-shadow"></div>
+          <div class="book-3d" style="--spine-clr:#2d1414">
+            <div class="book-front">
+              <img src="assets/5.jpg" alt="Nizhal" class="book-cover-img" />
+              <div class="book-sheen"></div>
+            </div>
+            <div class="book-spine"><span class="spine-num">05</span></div>
+            <div class="book-pages"></div>
+          </div>
+          <div class="book-floor-shadow"></div>
         </div>
       </div>
     </div>
@@ -180,92 +353,275 @@
     <div class="book-row reverse" data-bg="#1f0a0a">
       <div class="book-info">
         <span class="b-num">06</span>
-        <span class="b-genre">Mythological Epic</span>
+        <span class="b-genre">Mythological Epic · Veera Stree Kathaas — Book I · Upcoming</span>
         <h2 class="b-title">UTTARA</h2>
-        <p class="b-synopsis">First book of the Veera Stree Kathaas universe. The epic story of Queen Uttara, safeguarding the seed of the empire within her womb from cosmic destruction and the fury of fallen kings.</p>
+        <p class="b-tagline">The first step into a world I always wanted to create.</p>
+        <p class="b-synopsis">Uttara: The Mother of the Unborn Empire is the opening chapter of my upcoming mythological fiction series, Veera Stree Kathaas. The idea behind this series comes from something that stayed with me since childhood — growing up with the Mahabharata and other legends, one thought always remained: what about the women in these stories? <span class="extended-text">Their emotions, sacrifices, fears, strengths, and untold perspectives. That question slowly became the seed of this series. Through my own fictional lens and world-building approach, Veera Stree Kathaas aims to explore these forgotten voices. Uttara becomes the first story in that journey — a tale of legacy, motherhood, destiny, and survival. More than a book, this series is a dream project. A world I hope will one day redefine my journey as an author.</span></p>
+        <p class="b-quote">She did not survive the war. She chose to outlast it.</p>
         <div class="b-actions">
+          <a href="javascript:void(0)" class="b-btn read-more-btn">Read More</a>
           <a href="javascript:void(0)" class="b-btn disabled">Coming Soon</a>
         </div>
       </div>
       <div class="book-visual">
         <div class="book-tilt-wrap">
-          <img src="assets/6.png" alt="Uttara" class="book-cover-img" />
-          <div class="book-shadow"></div>
+          <div class="book-3d" style="--spine-clr:#3d1010">
+            <div class="book-front">
+              <img src="assets/6.png" alt="Uttara" class="book-cover-img" />
+              <div class="book-sheen"></div>
+            </div>
+            <div class="book-spine"><span class="spine-num">06</span></div>
+            <div class="book-pages"></div>
+          </div>
+          <div class="book-floor-shadow"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOOK 7 — RED WAVE (In Development) -->
+    <div class="book-row" data-bg="#160008">
+      <div class="book-info">
+        <span class="b-num">07</span>
+        <span class="b-genre">Research &amp; Awareness</span>
+        <h2 class="b-title">RED WAVE</h2>
+        <p class="b-tagline">Breaking the silence, one wave at a time.</p>
+        <p class="b-synopsis">RED WAVE is an awareness-driven work exploring menstruation through health, education, social realities, and human understanding. Born from years of observations, conversations, and questions inspired by the women who shaped my life — starting from my mother, relationships, and family stories. <span class="extended-text">The deeper the exploration went, the more the vision expanded — covering menstrual health, different phases, products, period poverty, social stigma, emotional experiences, and the everyday realities faced by women across different environments. The vision behind RED WAVE is to create an accessible and meaningful work not only for women, but also for men — to understand, learn, support, and care. More than a book, RED WAVE is a journey of research, respect, and understanding.</span></p>
+        <p class="b-quote">What remains unspoken does not disappear — it waits to be understood.</p>
+        <div class="b-actions">
+          <a href="javascript:void(0)" class="b-btn read-more-btn">Read More</a>
+          <span class="coming-soon-badge">
+            <span class="cs-dot"></span>
+            In Development
+          </span>
+        </div>
+      </div>
+      <div class="book-visual">
+        <div class="book-tilt-wrap">
+          <div class="book-3d" style="--spine-clr:#580808">
+            <div class="book-front">
+              <img src="assets/7.jpg" alt="Red Wave" class="book-cover-img" />
+              <div class="book-sheen"></div>
+            </div>
+            <div class="book-spine"><span class="spine-num">07</span></div>
+            <div class="book-pages"></div>
+          </div>
+          <div class="book-floor-shadow"></div>
         </div>
       </div>
     </div>
 
   </section>
 
-  <!-- OTHER WORKS -->
+  <!-- OTHER WORKS (Film Polaroid Gallery) -->
   <section class="other-works" id="other-works">
     <div class="ow-container">
-      <h2 class="ow-heading">Other <span class="gold">Works</span></h2>
-      <div class="ow-card">
-        <h3>DIAMANT Restored Frame</h3>
-        <p>Archival celluloid restoration using DIAMANT workflows — bridging historical film artifacts with 4K digital precision.</p>
-        <div class="video-container">
-          <video controls preload="metadata" class="ow-video">
-            <source src="file:///D:/WhatsApp%20Video%202026-05-22%20at%203.43.22%20PM.mp4" type="video/mp4">
-          </video>
-        </div>
+      <h2 class="ow-heading">Creative <span class="gold">Archives</span></h2>
+      <p class="ow-subtitle">Live Events &middot; LED Installations &middot; Visual Productions</p>
+    </div>
+
+    <!-- Rolling Film Strip — two tracks, injected by script.js -->
+    <div class="film-gallery">
+      <div class="film-rail" id="filmRailTop"></div>
+      <div class="film-track-wrap">
+        <div class="film-track" id="filmTrack1"></div>
       </div>
+      <div class="film-rail" id="filmRailMid"></div>
+      <div class="film-track-wrap">
+        <div class="film-track reverse" id="filmTrack2"></div>
+      </div>
+      <div class="film-rail" id="filmRailBot"></div>
     </div>
   </section>
 
+  <!-- WRITING JOURNEY TIMELINE -->
+  <section class="journey-section" id="journey">
+    <div class="journey-container">
+      <p class="journey-eyebrow">The Path So Far</p>
+      <h2 class="journey-heading">Writing <span class="gold">Journey</span></h2>
+      <p class="journey-sub">From the first page to worlds still unwritten.</p>
+      <div class="journey-track">
+
+        <!-- 2023 Amma's Love -->
+        <div class="j-item j-left js-reveal-left">
+          <div class="j-content">
+            <span class="j-year">2023</span>
+            <h3 class="j-title">Amma's Love</h3>
+            <p class="j-desc">Where it all began — a deeply personal poetry collection that opened the door to everything that followed.</p>
+          </div>
+          <div class="j-node"><div class="j-dot"></div></div>
+        </div>
+
+        <!-- 2024 Looped -->
+        <div class="j-item j-right js-reveal-right">
+          <div class="j-node"><div class="j-dot"></div></div>
+          <div class="j-content">
+            <span class="j-year">2024</span>
+            <h3 class="j-title">Looped</h3>
+            <p class="j-desc">Born from late-night conversations — a science-fiction universe that expanded far beyond its first idea.</p>
+          </div>
+        </div>
+
+        <!-- 2025 Echoes of Veloria -->
+        <div class="j-item j-left js-reveal-left">
+          <div class="j-content">
+            <span class="j-year">2025</span>
+            <h3 class="j-title">Echoes of Veloria</h3>
+            <p class="j-desc">The universe grew — deeper mythology, hidden truths, and a world that refused to stay contained.</p>
+          </div>
+          <div class="j-node"><div class="j-dot"></div></div>
+        </div>
+
+        <!-- 2026 Between Noise and Silence -->
+        <div class="j-item j-right js-reveal-right">
+          <div class="j-node"><div class="j-dot"></div></div>
+          <div class="j-content">
+            <span class="j-year">2026</span>
+            <h3 class="j-title">Between Noise and Silence</h3>
+            <p class="j-desc">A pivot inward — exploring the hidden lives of everyday people and the silence beneath the surface.</p>
+          </div>
+        </div>
+
+        <!-- Upcoming Nizhal -->
+        <div class="j-item j-left js-reveal-left">
+          <div class="j-content">
+            <span class="j-year j-year-upcoming">Upcoming</span>
+            <h3 class="j-title">Nizhal</h3>
+            <p class="j-desc">Folklore, fear, and shadows that were never just stories — into the dark heart of local legend.</p>
+          </div>
+          <div class="j-node"><div class="j-dot j-dot-upcoming"></div></div>
+        </div>
+
+        <!-- Upcoming Uttara -->
+        <div class="j-item j-right js-reveal-right">
+          <div class="j-node"><div class="j-dot j-dot-upcoming"></div></div>
+          <div class="j-content">
+            <span class="j-year j-year-upcoming">Upcoming</span>
+            <h3 class="j-title">Uttara</h3>
+            <p class="j-desc">A dream project — reimagining epic mythology through the untold voices of the women within it.</p>
+          </div>
+        </div>
+
+        <!-- In Development Red Wave -->
+        <div class="j-item j-left js-reveal-left">
+          <div class="j-content">
+            <span class="j-year j-year-dev">In Development</span>
+            <h3 class="j-title">Red Wave</h3>
+            <p class="j-desc">An awareness journey — breaking the silence around menstruation through research, respect, and empathy.</p>
+          </div>
+          <div class="j-node"><div class="j-dot j-dot-dev"></div></div>
+        </div>
+
+      </div>
+    </div>
   </section>
 
   <!-- ABOUT AUTHOR -->
   <section class="about-author" id="about">
     <div class="about-container">
-      
-      <!-- 3D FLIP CARD -->
-      <div class="flip-card-container">
-        <div class="flip-card">
-          <div class="flip-card-inner">
-            <div class="flip-card-front">
-              <img src="assets/author_photo.jpg" alt="Sathyaraj Natarajan" class="flip-img"/>
-            </div>
-            <div class="flip-card-back">
-              <img src="assets/logo.png" alt="Logo" class="flip-img-logo"/>
-            </div>
+
+      <!-- IDENTITY CARD (Cycles through 3 states on click) -->
+      <div class="author-card-wrap">
+        <div class="author-card" id="authorCard" onclick="toggleCard()">
+          <div class="author-card-inner" id="authorCardInner">
+            <img src="assets/author_photo.jpg" id="authorCardImg" class="flip-img" alt="Sathyaraj Natarajan"/>
           </div>
+        </div>
+        <!-- Identity hint -->
+        <div class="flip-hint" id="flipHint">Click to explore identities</div>
+        <!-- 3-state dot indicator -->
+        <div class="card-dots" id="cardDots">
+          <button class="card-dot active" data-index="0" title="Author" onclick="goToCardState(0)"></button>
+          <button class="card-dot" data-index="1" title="Visual Engineer" onclick="goToCardState(1)"></button>
+          <button class="card-dot" data-index="2" title="Film Restoration" onclick="goToCardState(2)"></button>
+        </div>
+        <!-- Identity labels -->
+        <div class="card-identity-labels">
+          <span class="card-label active" data-index="0">Author</span>
+          <span class="card-label" data-index="1">Visual Engineer</span>
+          <span class="card-label" data-index="2">Film Restoration</span>
         </div>
       </div>
 
+      <!-- BIO TEXT (3 panels) -->
       <div class="about-text">
-        <h2 class="ow-heading">The <span class="gold">Author</span></h2>
-        <p style="color: #aaa; line-height: 1.8; max-width: 500px;">Sathyaraj Natarajan is a visual storyteller and engineer from Kerala whose creative journey spans poetry, psychological narratives, science fiction, mythology, and cinema.</p>
+
+        <!-- STATE 0: AUTHOR -->
+        <div class="bio-panel" id="bioAuthor">
+          <h2 class="ow-heading">The <span class="gold">Author</span></h2>
+          <p>Sathyaraj Natarajan is an author and visual storyteller from <span class="gold-text">Piravom, Kerala, India</span>, whose creative journey moves across literature, cinema, visual media, and world-building. His works are shaped by emotion, imagination, mythology, and cinematic thinking — often drawing inspiration from personal experiences, observations, and the worlds hidden within everyday life.</p>
+          <p>His journey began with <span class="gold-text">Amma's Love Poetry</span>, a deeply personal collection. He later expanded into science fiction through the <span class="gold-text">Looped</span> series, born from creative discussions with friends, and explored human emotions through <span class="gold-text">Between the Noise and Silence</span>.</p>
+          <p>Currently developing <span class="gold-text">Veera Stree Kathaas</span> — an ambitious mythological fiction series reimagining epic narratives through the perspectives of women, beginning with <span class="gold-text">Uttara: The Mother of the Unborn Empire</span>.</p>
+        </div>
+
+        <!-- STATE 1: VISUAL ENGINEER -->
+        <div class="bio-panel" id="bioVE">
+          <h2 class="ow-heading">Visual <span class="gold">Engineer</span></h2>
+          <p>Sathyaraj Natarajan is a Visual Engineer working in the AV industry with a focus on <span class="gold-text">LED wall systems</span> and large-scale event visuals. Currently part of the visual ecosystem at <span class="gold-text">PXL Media</span>, he has contributed to more than <span class="gold-text">24 live shows and productions</span>, working across concerts, exhibitions, sports events, cultural programs, corporate experiences, and large-scale live environments.</p>
+          <p>His work spans multiple stages of LED visual workflows including <span class="gold-text">installation, system setup, programming, visual mapping, content execution, and live showcase operations</span> — helping transform creative concepts into immersive visual experiences across stages and display environments.</p>
+          <p>His creative journey originally began through visual effects and animation, later expanding into film restoration and archival workflows before evolving into live event visual engineering.</p>
+          <p>Combining <span class="gold-text">technical execution with cinematic thinking</span>, he continues exploring the intersection of technology, storytelling, and visual experiences.</p>
+        </div>
+
+        <!-- STATE 2: FILM RESTORATION -->
+        <div class="bio-panel" id="bioFilm">
+          <h2 class="ow-heading">Film <span class="gold">Restoration</span></h2>
+          <p>Sathyaraj Natarajan worked within digital film restoration workflows at <span class="gold-text">Prime Focus Technologies, Mumbai</span>, gaining experience in archival restoration environments and production-style restoration pipelines.</p>
+          <p>Working with <span class="gold-text">DIAMANT Film Restoration</span> — a high-end restoration platform widely used by film archives, post-production facilities, and restoration studios internationally — he contributed to restoration workflows involving archival and production content.</p>
+          <p>His experience included participation in projects such as <span class="gold-text">Lakachi Gosta</span> and <span class="gold-text">Juari</span>, while also working with restoration content connected to the <span class="gold-text">National Film Archive of India (NFAI)</span> ecosystem.</p>
+          <p>Working within archival restoration environments provided exposure to restoration pipelines, preservation standards, quality review processes, collaborative workflows, and timeline-driven production execution associated with heritage film content. This journey further strengthened his cinematic perspective before moving into large-scale visual engineering and immersive event experiences.</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- CONTACT / NEWSLETTER -->
+  <section class="newsletter-section" id="contact">
+    <div class="newsletter-container">
+      <p class="nl-eyebrow">Stay in the</p>
+      <h2 class="nl-heading">Story</h2>
+      <p class="nl-sub">New books, events, and creative dispatches — delivered only when something worth sharing happens.</p>
+      <form class="nl-form" id="nlForm" action="https://formspree.io/thisissamayh@gmail.com" method="POST">
+        <div class="nl-input-group">
+          <input type="email" name="email" id="nlEmail" placeholder="your@email.com" required autocomplete="email" />
+          <button type="submit" class="nl-btn" id="nlSubmit">Subscribe</button>
+        </div>
+        <p class="nl-note">No spam. Unsubscribe anytime. Usually 2–3 emails per year.</p>
+      </form>
+      <div class="nl-success" id="nlSuccess">
+        <span class="nl-check">✓</span>
+        <span>You're in. Watch for the next dispatch.</span>
       </div>
 
     </div>
   </section>
 
   <!-- FOOTER / SOCIALS -->
-  <footer class="footer" id="contact">
+  <footer class="footer" id="footerContainer">
     <div class="footer-content">
       <h2 class="footer-title">Connect</h2>
       <p>Publishing, visual engineering collaboration, or reader feedback — transmissions are open.</p>
       
-      <div class="social-links">
-        <a href="mailto:sathyaraj@example.com" class="social-btn">
+      <div class="social-links" id="socialLinks">
+        <a href="mailto:thisissamayh@gmail.com" class="social-btn" title="Email">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
         </a>
-        <a href="https://instagram.com" target="_blank" class="social-btn">
+        <a href="https://www.instagram.com/thisissamayah" target="_blank" class="social-btn" title="Instagram">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
         </a>
-        <a href="https://twitter.com" target="_blank" class="social-btn">
+        <a href="https://www.x.com/thisissamayah" target="_blank" class="social-btn" title="X (Twitter)">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l11.733 16h4.267l-11.733 -16z"/><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"/></svg>
         </a>
-        <a href="https://youtube.com" target="_blank" class="social-btn">
+        <a href="https://www.youtube.com/sathyaraj_natarajan" target="_blank" class="social-btn" title="YouTube">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
         </a>
-        <a href="https://linkedin.com" target="_blank" class="social-btn">
+        <a href="https://www.linkedin.com/in/sathyarajnatarajan/" target="_blank" class="social-btn" title="LinkedIn">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
         </a>
       </div>
     </div>
-    
+
     <div class="footer-bottom">
       <p>© 2026 Sathyaraj Natarajan. SAMAYAH.INC<br>All rights reserved.</p>
     </div>
@@ -273,11 +629,22 @@
 
 </div> <!-- /smooth-wrapper -->
 
+<!-- GALLERY LIGHTBOX -->
+<div class="gallery-lightbox" id="galleryLightbox">
+  <button class="lightbox-close" id="lightboxClose">&#x2715;</button>
+  <button class="lightbox-prev" id="lightboxPrev">&#x2039;</button>
+  <button class="lightbox-next" id="lightboxNext">&#x203A;</button>
+  <div class="lightbox-inner">
+    <div class="lightbox-media" id="lightboxMedia"></div>
+    <div class="lightbox-caption" id="lightboxCaption"></div>
+  </div>
+</div>
+
 <!-- Scripts -->
   <!-- SCRIPTS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
-  <script src="script.js"></script>
+  <script src="script.js?v=16"></script>
 </body>
 </html>
