@@ -1542,135 +1542,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // =========================================================================
-// AMBIENT CINEMATIC ATMOSPHERE  — Web Audio API
+// AMBIENT CINEMATIC ATMOSPHERE  — Audio File
 // =========================================================================
 (function initAmbientSound() {
   const btn = document.getElementById('ambientToggle');
   if (!btn) return;
 
-  let ctx         = null;
-  let master      = null;
-  let isPlaying   = false;
-  let allNodes    = [];
-
-  function buildSoundscape() {
-    ctx    = new (window.AudioContext || window.webkitAudioContext)();
-    master = ctx.createGain();
-    master.gain.value = 0;
-    master.connect(ctx.destination);
-
-    // ── 1. SYNTHETIC REVERB (Lush & Massive) ───────────────────────────
-    const reverb = ctx.createConvolver();
-    const length = ctx.sampleRate * 4.0; // 4 second decay
-    const impulse = ctx.createBuffer(2, length, ctx.sampleRate);
-    for (let i = 0; i < 2; i++) {
-      const channel = impulse.getChannelData(i);
-      for (let j = 0; j < length; j++) {
-        // Exponential decay of white noise
-        channel[j] = (Math.random() * 2 - 1) * Math.pow(1 - j / length, 4);
-      }
-    }
-    reverb.buffer = impulse;
-    
-    const reverbGain = ctx.createGain();
-    reverbGain.gain.value = 1.5; // High wet mix
-    reverb.connect(reverbGain);
-    reverbGain.connect(master);
-
-    // ── 2. DEEP DRONE CHORD (A Sus2/4 style) ───────────────────────────
-    // Frequencies: A2 (110), E3 (164.81), B3 (246.94), D4 (293.66)
-    const freqs = [110.0, 164.81, 246.94, 293.66];
-    
-    freqs.forEach((freq, idx) => {
-      // Main tone (Triangle for warmth)
-      const osc = ctx.createOscillator();
-      osc.type = 'triangle';
-      osc.frequency.value = freq;
-      
-      // Slight detune for width
-      const detuneOsc = ctx.createOscillator();
-      detuneOsc.type = 'sine';
-      detuneOsc.frequency.value = freq * 1.005;
-
-      const voiceGain = ctx.createGain();
-      voiceGain.gain.value = 0; // modulated by LFO
-
-      // Slow LFO to pulse the volume of this specific note
-      const lfo = ctx.createOscillator();
-      lfo.type = 'sine';
-      lfo.frequency.value = 0.02 + (idx * 0.007); // ~15-30 second cycles
-      
-      const lfoScale = ctx.createGain();
-      // Base volume + LFO modulation
-      lfoScale.gain.value = 0.06; 
-      
-      lfo.connect(lfoScale);
-      lfoScale.connect(voiceGain.gain);
-      
-      osc.connect(voiceGain);
-      detuneOsc.connect(voiceGain);
-      
-      // Route everything through the massive reverb
-      voiceGain.connect(reverb);
-      
-      // And a little bit of dry signal directly to master
-      const dryGain = ctx.createGain();
-      dryGain.gain.value = 0.4;
-      voiceGain.connect(dryGain);
-      dryGain.connect(master);
-      
-      osc.start();
-      detuneOsc.start();
-      lfo.start();
-      allNodes.push(osc, detuneOsc, lfo);
-    });
-
-    // ── 3. LOW TAPE HISS / SPACE DUST ──────────────────────────────────
-    const SR = ctx.sampleRate;
-    const bufLen = SR * 2;
-    const noiseBuf = ctx.createBuffer(1, bufLen, SR);
-    const data = noiseBuf.getChannelData(0);
-    let lastOut = 0;
-    for (let i = 0; i < bufLen; i++) {
-      const white = Math.random() * 2 - 1;
-      lastOut = (lastOut + 0.02 * white) / 1.02; // Brown noise
-      data[i] = lastOut * 1.5; 
-    }
-    const noiseSrc = ctx.createBufferSource();
-    noiseSrc.buffer = noiseBuf;
-    noiseSrc.loop = true;
-
-    const noiseFilter = ctx.createBiquadFilter();
-    noiseFilter.type = 'lowpass';
-    noiseFilter.frequency.value = 1500; 
-
-    const noiseGain = ctx.createGain();
-    noiseGain.gain.value = 0.04;
-
-    noiseSrc.connect(noiseFilter);
-    noiseFilter.connect(noiseGain);
-    noiseGain.connect(master);
-    noiseSrc.start();
-    allNodes.push(noiseSrc);
-  }
+  let audio = new Audio('assets/bg-noise.mp3');
+  audio.loop = true;
+  audio.volume = 0;
+  let isPlaying = false;
+  let fadeInterval;
 
   function fadeIn() {
-    master.gain.cancelScheduledValues(ctx.currentTime);
-    master.gain.setValueAtTime(master.gain.value, ctx.currentTime);
-    master.gain.linearRampToValueAtTime(1, ctx.currentTime + 5); // very slow fade in
+    clearInterval(fadeInterval);
+    audio.play().catch(e => console.log('Audio play failed:', e));
+    fadeInterval = setInterval(() => {
+      if (audio.volume < 0.95) {
+        audio.volume += 0.05;
+      } else {
+        audio.volume = 1;
+        clearInterval(fadeInterval);
+      }
+    }, 200);
   }
   
   function fadeOut(cb) {
-    master.gain.cancelScheduledValues(ctx.currentTime);
-    master.gain.setValueAtTime(master.gain.value, ctx.currentTime);
-    master.gain.linearRampToValueAtTime(0, ctx.currentTime + 4);
-    if (cb) setTimeout(cb, 4100);
+    clearInterval(fadeInterval);
+    fadeInterval = setInterval(() => {
+      if (audio.volume > 0.05) {
+        audio.volume -= 0.05;
+      } else {
+        audio.volume = 0;
+        audio.pause();
+        clearInterval(fadeInterval);
+        if (cb) cb();
+      }
+    }, 200);
   }
 
   btn.addEventListener('click', () => {
-    if (!ctx) buildSoundscape();
-    if (ctx.state === 'suspended') ctx.resume();
-
     if (!isPlaying) {
       isPlaying = true;
       btn.classList.add('active');
@@ -1680,7 +1591,7 @@ document.addEventListener('DOMContentLoaded', () => {
       isPlaying = false;
       btn.classList.remove('active');
       btn.title = 'Play cinematic ambience';
-      fadeOut(() => ctx && ctx.suspend());
+      fadeOut();
     }
   });
 })();
