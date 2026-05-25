@@ -1158,13 +1158,7 @@ function renderProjectCards(targetId, category, limit = 6) {
   target.innerHTML = items.map(item => `
     <button class="project-card media-project-card" type="button" data-gallery-index="${item.index}">
       <span class="project-thumb">
-        <img src="${item.src}" loading="lazy" alt="${escapeHtml(item.project)}">
-      </span>
-      <span class="project-copy">
-        <span class="project-kicker">${escapeHtml(item.label)}</span>
-        <strong>${escapeHtml(item.project)}</strong>
-        <span class="project-role">${escapeHtml(item.role)}</span>
-        <span>${escapeHtml(item.description)}</span>
+        <img src="${item.src}" loading="lazy" alt="Portfolio item">
       </span>
     </button>
   `).join('');
@@ -1194,11 +1188,6 @@ function renderVideoFeatures(targetId, category) {
       <video controls preload="metadata" ${item.poster ? `poster="${item.poster}"` : ''}>
         <source src="${item.src}" type="video/mp4" />
       </video>
-      <div>
-        <span class="project-kicker">${escapeHtml(item.label)}</span>
-        <h3>${escapeHtml(item.project)}</h3>
-        <p>${escapeHtml(item.description)}</p>
-      </div>
     </article>
   `).join('');
 }
