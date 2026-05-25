@@ -240,6 +240,10 @@ function initScrollTriggers() {
   const rows = document.querySelectorAll('.book-row');
   
   rows.forEach((row, i) => {
+    // Explicit z-index to ensure earlier rows render on top of later rows (for dropdowns)
+    row.style.position = 'relative';
+    row.style.zIndex = 100 - i;
+
     const bgColor = row.getAttribute('data-bg');
     
     ScrollTrigger.create({
@@ -280,9 +284,9 @@ function initScrollTriggers() {
     // Text Fade In
     const info = row.querySelector('.book-info');
     gsap.fromTo(info,
-      { opacity: 0, y: 50 },
+      { opacity: 0, y: 50, z: 100 },
       {
-        opacity: 1, y: 0,
+        opacity: 1, y: 0, z: 100, force3D: true,
         duration: 1,
         ease: 'power3.out',
         scrollTrigger: {
