@@ -903,6 +903,10 @@ function initParticles() {
     for(let i = 0; i < numParticles; i++) {
       particles.push(new Firefly());
     }
+
+    // Add back the original canvas butterflies
+    butterflies.push(new Butterfly());
+    butterflies.push(new Butterfly());
   }
 
   function animateParticles() {
@@ -912,6 +916,11 @@ function initParticles() {
     for (let i = 0; i < particles.length; i++) {
       particles[i].update();
       particles[i].draw();
+    }
+    
+    for (let i = 0; i < butterflies.length; i++) {
+      butterflies[i].update();
+      butterflies[i].draw();
     }
     
     requestAnimationFrame(animateParticles);
