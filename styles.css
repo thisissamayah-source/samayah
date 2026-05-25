@@ -2745,3 +2745,31 @@ body {
   0% { transform: translateX(0); }
   100% { transform: translateX(-100%); }
 }
+
+/* RK Initiative Footer Glow */
+.rk-credit {
+  opacity: 0.8;
+  padding-left: 8px;
+  font-family: var(--font-sans);
+  font-size: 0.85em;
+  letter-spacing: 1px;
+}
+.rk-word {
+  display: inline-block;
+  color: rgba(255, 255, 255, 0.4);
+  animation: wordGlow 4s ease-in-out infinite;
+}
+.rk-word.w1 { animation-delay: 0s; }
+.rk-word.w2 { animation-delay: 1.3s; }
+.rk-word.w3 { animation-delay: 2.6s; }
+
+@keyframes wordGlow {
+  0%, 100% {
+    color: rgba(255, 255, 255, 0.4);
+    text-shadow: none;
+  }
+  30% {
+    color: var(--gold);
+    text-shadow: 0 0 10px rgba(212, 175, 55, 0.8), 0 0 20px rgba(212, 175, 55, 0.4);
+  }
+}
