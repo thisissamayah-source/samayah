@@ -1624,7 +1624,46 @@ document.addEventListener('DOMContentLoaded', () => {
       link.addEventListener('click', () => {
         hamburger.classList.remove('active');
         navLinks.classList.remove('active');
-      });
     });
+  }
+});
+
+// =========================================================================
+// INTERVIEW MODAL LOGIC
+// =========================================================================
+document.addEventListener('DOMContentLoaded', () => {
+  const badge = document.getElementById('interviewBadge');
+  const modal = document.getElementById('interviewModal');
+  const closeBtn = document.getElementById('interviewClose');
+  const backdrop = document.getElementById('interviewModalCloseBg');
+  
+  if(badge && modal && closeBtn && backdrop) {
+    const openModal = () => {
+      modal.classList.add('active');
+      // Pause ambient audio if it's playing
+      const audio = document.getElementById('ambient-audio');
+      if (audio && !audio.paused) {
+        audio.pause();
+        audio.dataset.wasPlaying = "true";
+      }
+      // Pause Lenis scrolling
+      if(window.lenis) window.lenis.stop();
+    };
+
+    const closeModal = () => {
+      modal.classList.remove('active');
+      // Resume ambient audio if it was playing
+      const audio = document.getElementById('ambient-audio');
+      if (audio && audio.dataset.wasPlaying === "true") {
+        audio.play().catch(e => console.log("Audio play prevented:", e));
+        audio.dataset.wasPlaying = "false";
+      }
+      // Resume Lenis scrolling
+      if(window.lenis) window.lenis.start();
+    };
+
+    badge.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    backdrop.addEventListener('click', closeModal);
   }
 });
