@@ -907,6 +907,7 @@ function initParticles() {
     // Add back the original canvas butterflies
     butterflies.push(new Butterfly());
     butterflies.push(new Butterfly());
+    butterflies.push(new Butterfly());
   }
 
   function animateParticles() {
