@@ -1,3 +1,9 @@
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initBookControls);
+} else {
+  initBookControls();
+}
+
 // Register GSAP Plugins
 gsap.registerPlugin(ScrollTrigger);
 
@@ -143,12 +149,22 @@ function initAnimations() {
   initTitleShuffle();
   initReadMore();
   initBuyDropdowns();
+  initHeroStats();
+  initQuickActions();
 }
 
 // =========================================================================
 // BUY NOW DROPDOWN
 // =========================================================================
+function initBookControls() {
+  initBuyDropdowns();
+  initReadMore();
+}
+
 function initBuyDropdowns() {
+  if (!document.body || document.body.dataset.buyDropdownsReady === 'true') return;
+  document.body.dataset.buyDropdownsReady = 'true';
+
   // Toggle on trigger click
   document.addEventListener('click', (e) => {
     const trigger = e.target.closest('.buy-dropdown-trigger');
@@ -156,6 +172,7 @@ function initBuyDropdowns() {
 
     if (trigger) {
       e.preventDefault();
+      e.stopPropagation();
       const wrap = trigger.closest('.buy-dropdown-wrap');
       const isOpen = wrap.classList.contains('open');
       // Close every other open dropdown first
@@ -181,10 +198,14 @@ function initBuyDropdowns() {
 // READ MORE TOGGLE
 // =========================================================================
 function initReadMore() {
+  if (!document.body || document.body.dataset.readMoreReady === 'true') return;
+  document.body.dataset.readMoreReady = 'true';
+
   const btns = document.querySelectorAll('.read-more-btn');
   btns.forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
+      e.stopPropagation();
       const synopsis = btn.closest('.book-info').querySelector('.b-synopsis');
       if (synopsis) {
         synopsis.classList.toggle('expanded');
@@ -924,6 +945,83 @@ function initParticles() {
 // =========================================================================
 // FILM POLAROID GALLERY — data + builder + lightbox
 // =========================================================================
+const reviews = [
+  {
+    rating: 5,
+    name: 'Goodreads',
+    source: 'Author profile',
+    url: 'https://www.goodreads.com/search?q=Sathyarajnatarajan+&qid=VW7falrtJk',
+    text: 'Goodreads currently shows a 5.0 average across 5 public ratings for Sathyaraj Natarajan, with seven distinct works listed.'
+  },
+  {
+    rating: 5,
+    name: 'Goodreads',
+    source: 'Early book ratings',
+    url: 'https://www.goodreads.com/search?q=Sathyarajnatarajan+&qid=VW7falrtJk',
+    text: 'AMMA\'S LOVE, LOOPED, and Echoes of Veloria each show early 5.00 average reader ratings on Goodreads.'
+  },
+  {
+    rating: 0,
+    name: 'Review note',
+    source: 'Public listings',
+    url: 'https://notionpress.com/read/amma-s-love',
+    text: 'Public retailer and Goodreads data currently show rating signals, but no written reader review excerpts are available to quote yet.'
+  }
+];
+const pressMentions = [];
+const bookSampleLinks = {};
+const loopedProofAsset = '';
+const portfolioCategoryOverrides = {
+  0: 'restoration',
+  1: 'restoration',
+  2: 'restoration',
+  3: 'restoration',
+  4: 'restoration',
+  5: 'restoration',
+  65: 'restoration'
+};
+
+function escapeHtml(value) {
+  return String(value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
+}
+
+function getGalleryCategory(item, index) {
+  if (portfolioCategoryOverrides[index]) return portfolioCategoryOverrides[index];
+  if (item.category) return item.category;
+  const label = (item.label || '').toLowerCase();
+  if (item.type === 'video') return 'live';
+  if (label.includes('backstage') || label.includes('visual') || label.includes('stage prep') || label.includes('system') || label.includes('pxl')) {
+    return 'live';
+  }
+  return 'live';
+}
+
+function enrichGalleryItem(item, index) {
+  const category = getGalleryCategory(item, index);
+  const label = item.label || `Portfolio Item ${index + 1}`;
+  const roleByCategory = {
+    live: 'Visual Production - LED & Stage Visuals',
+    restoration: 'Film Restoration - Archive Workflow'
+  };
+  const descriptionByCategory = {
+    live: 'Archive material from live visual engineering, LED setup, stage visuals, and cinematic event coverage.',
+    restoration: 'Archive and restoration-related material from film workflow, review, and preservation environments.'
+  };
+  return {
+    ...item,
+    galleryIndex: index,
+    category,
+    project: item.project || label,
+    role: item.role || roleByCategory[category],
+    description: item.description || descriptionByCategory[category]
+  };
+}
+
 const galleryItems = [
   { src: 'assets/gallery/IMG_20250224_202511836.jpg', type: 'image', label: 'Live Show' },
   { src: 'assets/gallery/IMG_20250401_030742785.jpg', type: 'image', label: 'Stage Visual' },
@@ -932,14 +1030,14 @@ const galleryItems = [
   { src: 'assets/gallery/IMG_20250505_215246239.jpg', type: 'image', label: 'Showcase' },
   { src: 'assets/gallery/IMG_20250517_150910200.jpg', type: 'image', label: 'Stage Prep' },
   { src: 'assets/gallery/IMG_20250620_145308928.jpg', type: 'image', label: 'System Setup' },
-  { src: 'assets/gallery/IMG_20250620_191405996.jpg', type: 'image', label: 'Live Visuals' },
+  { src: 'assets/gallery/IMG_20250620_191405996.jpg', type: 'image', label: 'Backstage' },
   { src: 'assets/gallery/IMG_20250624_155151996.jpg', type: 'image', label: 'LED Stage' },
   { src: 'assets/gallery/IMG_20250624_174715237.jpg', type: 'image', label: 'Event Tech' },
   { src: 'assets/gallery/IMG_20250629_160229095.jpg', type: 'image', label: 'Live Show' },
   { src: 'assets/gallery/IMG_20250704_131355815.jpg', type: 'image', label: 'LED Setup' },
   { src: 'assets/gallery/IMG_20250712_083346611.jpg', type: 'image', label: 'Stage Visual' },
   { src: 'assets/gallery/IMG_20250719_185457917.jpg', type: 'image', label: 'Live Event' },
-  { src: 'assets/gallery/IMG_20250808_120341946.jpg', type: 'image', label: 'Backstage' },
+  { src: 'assets/gallery/IMG_20250808_120341946.jpg', type: 'image', label: 'Live Visuals' },
   { src: 'assets/gallery/IMG_20250820_042417787~2.jpg', type: 'image', label: 'LED Stage' },
   { src: 'assets/gallery/IMG_20250829_052245824.jpg', type: 'image', label: 'Live Show' },
   { src: 'assets/gallery/IMG_20250829_074406078.jpg', type: 'image', label: 'System Config' },
@@ -990,10 +1088,11 @@ const galleryItems = [
   { src: 'assets/gallery/IMG_20260502_151324704.jpg', type: 'image', label: 'Live Event' },
   { src: 'assets/gallery/PXL_20250714_195041317.jpg',  type: 'image', label: 'System Ops' },
   { src: 'assets/gallery/PXL_20250927_220203784.jpg',  type: 'image', label: 'Live Visual' },
-  { src: 'assets/gallery/VID_20250524_060726826.mp4',  type: 'video', label: 'Live Footage' },
-  { src: 'assets/gallery/VID_20250630_195411301.mp4',  type: 'video', label: 'Live Footage' }
+  { src: 'assets/gallery/VID_20250524_060726826.mp4',  type: 'video', label: 'Restoration Footage', poster: 'assets/gallery/IMG_20250517_150910200.jpg' },
+  { src: 'assets/gallery/VID_20250630_195411301.mp4',  type: 'video', label: 'Live Footage', poster: 'assets/gallery/IMG_20250629_160229095.jpg' }
 ];
 
+const portfolioItems = galleryItems.map((item, index) => enrichGalleryItem(item, index));
 const polaroidRotations = [-2.5, 1.8, -1.2, 3.1, -3.5, 2.2, -1.7, 2.8, -3.2, 1.5, -2.1, 3.4, -1.9, 2.6, -3.0, 1.3];
 let lightboxCurrentIndex = 0;
 
@@ -1004,12 +1103,13 @@ function buildFilmStrip() {
     if (!track) return;
 
     // Duplicate items for seamless infinite loop (-50% translate trick)
-    const doubled = [...galleryItems, ...galleryItems];
+    const liveItems = portfolioItems.filter(item => item.category === 'live');
+    const doubled = [...liveItems, ...liveItems];
 
     doubled.forEach((item, i) => {
-      const realIndex = i % galleryItems.length;
       const frame = document.createElement('div');
       frame.className = 'film-frame';
+      const safeLabel = escapeHtml(item.project || item.label);
 
       if (item.type === 'video') {
         frame.innerHTML = `
@@ -1017,14 +1117,14 @@ function buildFilmStrip() {
           <div class="film-play-badge">
             <svg viewBox="0 0 24 24" fill="currentColor" width="14" height="14"><path d="M8 5v14l11-7z"/></svg>
           </div>
-          <div class="film-frame-label">${item.label}</div>`;
+          <div class="film-frame-label">${safeLabel}</div>`;
       } else {
         frame.innerHTML = `
-          <img src="${item.src}" loading="lazy" alt="${item.label}" draggable="false">
-          <div class="film-frame-label">${item.label}</div>`;
+          <img src="${item.src}" loading="lazy" alt="${safeLabel}" draggable="false">
+          <div class="film-frame-label">${safeLabel}</div>`;
       }
 
-      frame.addEventListener('click', () => openGalleryLightbox(realIndex));
+      frame.addEventListener('click', () => openGalleryLightbox(item.galleryIndex));
       track.appendChild(frame);
     });
   });
@@ -1046,6 +1146,244 @@ function buildFilmRails() {
 
 /* Drag-to-scroll — REMOVED (auto-rolling strip doesn't need drag scroll) */
 
+function renderProjectCards(targetId, category, limit = 6) {
+  const target = document.getElementById(targetId);
+  if (!target) return;
+
+  const items = portfolioItems
+    .map((item, index) => ({ ...item, index }))
+    .filter(item => item.category === category && item.type !== 'video')
+    .slice(0, limit);
+
+  target.innerHTML = items.map(item => `
+    <button class="project-card media-project-card" type="button" data-gallery-index="${item.index}">
+      <span class="project-thumb">
+        <img src="${item.src}" loading="lazy" alt="${escapeHtml(item.project)}">
+      </span>
+      <span class="project-copy">
+        <span class="project-kicker">${escapeHtml(item.label)}</span>
+        <strong>${escapeHtml(item.project)}</strong>
+        <span class="project-role">${escapeHtml(item.role)}</span>
+        <span>${escapeHtml(item.description)}</span>
+      </span>
+    </button>
+  `).join('');
+
+  target.querySelectorAll('[data-gallery-index]').forEach(card => {
+    card.addEventListener('click', () => openGalleryLightbox(Number(card.dataset.galleryIndex)));
+  });
+}
+
+function renderPortfolioCards() {
+  renderProjectCards('liveProjectGrid', 'live', 12);
+  renderVideoFeatures('liveVideoShowcase', 'live');
+  renderProjectCards('restorationProjectGrid', 'restoration', 6);
+  renderVideoFeatures('restorationVideoShowcase', 'restoration');
+}
+
+function renderVideoFeatures(targetId, category) {
+  const target = document.getElementById(targetId);
+  if (!target) return;
+
+  const videos = portfolioItems
+    .filter(item => item.category === category && item.type === 'video');
+
+  target.hidden = videos.length === 0;
+  target.innerHTML = videos.map(item => `
+    <article class="video-feature">
+      <video controls preload="metadata" ${item.poster ? `poster="${item.poster}"` : ''}>
+        <source src="${item.src}" type="video/mp4" />
+      </video>
+      <div>
+        <span class="project-kicker">${escapeHtml(item.label)}</span>
+        <h3>${escapeHtml(item.project)}</h3>
+        <p>${escapeHtml(item.description)}</p>
+      </div>
+    </article>
+  `).join('');
+}
+
+function activatePortfolioTab(tabName) {
+  const buttons = document.querySelectorAll('.tab-btn');
+  const panels = document.querySelectorAll('.tab-panel');
+  if (!buttons.length || !panels.length) return;
+
+  buttons.forEach(button => {
+    const isActive = button.dataset.tab === tabName;
+    button.classList.toggle('active', isActive);
+    button.setAttribute('aria-selected', String(isActive));
+  });
+
+  panels.forEach(panel => {
+    const isActive = panel.dataset.panel === tabName;
+    panel.hidden = !isActive;
+    panel.classList.toggle('active', isActive);
+    if (isActive && window.gsap) {
+      gsap.fromTo(panel, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.35, ease: 'power2.out' });
+    }
+  });
+}
+
+function initPortfolioTabs() {
+  document.querySelectorAll('.tab-btn').forEach(button => {
+    button.addEventListener('click', () => activatePortfolioTab(button.dataset.tab));
+  });
+}
+
+function renderProofSections() {
+  const reviewSection = document.getElementById('readerReviews');
+  const reviewCarousel = document.getElementById('reviewCarousel');
+  if (reviewSection && reviewCarousel && reviews.length) {
+    const cards = reviews.map(review => `
+      <article class="review-card">
+        <div class="review-stars">${Number(review.rating) > 0 ? '&#9733;'.repeat(Number(review.rating)) : 'Rating data only'}</div>
+        <p>${escapeHtml(review.text)}</p>
+        ${review.url
+          ? `<a href="${escapeHtml(review.url)}" target="_blank" rel="noopener">${escapeHtml(review.name || 'Reader')} - ${escapeHtml(review.source || 'Verified reader')}</a>`
+          : `<span>${escapeHtml(review.name || 'Reader')} - ${escapeHtml(review.source || 'Verified reader')}</span>`}
+      </article>
+    `).join('');
+    reviewCarousel.innerHTML = cards + cards;
+    reviewSection.hidden = false;
+  }
+
+  const pressSection = document.getElementById('pressMentions');
+  const pressList = document.getElementById('pressList');
+  if (pressSection && pressList && pressMentions.length) {
+    pressList.innerHTML = pressMentions.map(item => `
+      <a href="${item.url}" target="_blank" rel="noopener">${escapeHtml(item.source)}</a>
+    `).join('');
+    pressSection.hidden = false;
+  }
+}
+
+function initLoopedProof() {
+  if (!loopedProofAsset) return;
+  const card = document.getElementById('loopedProofCard');
+  const img = document.getElementById('loopedProofImg');
+  if (!card || !img) return;
+  img.src = loopedProofAsset;
+  card.hidden = false;
+}
+
+function renderSampleLinks() {
+  Object.entries(bookSampleLinks).forEach(([bookKey, url]) => {
+    if (!url) return;
+    const row = document.querySelector(`[data-book-key="${bookKey}"]`);
+    const actions = row ? row.querySelector('.b-actions') : null;
+    if (!actions) return;
+    const link = document.createElement('a');
+    link.className = 'b-btn sample-btn';
+    link.href = url;
+    link.target = '_blank';
+    link.rel = 'noopener';
+    link.textContent = 'Read First Chapter';
+    actions.appendChild(link);
+  });
+}
+
+function scrollToTarget(target) {
+  if (!target || target === '#') {
+    lenis.scrollTo(0);
+    return;
+  }
+  const element = document.querySelector(target);
+  if (!element) return;
+  lenis.scrollTo(element, { offset: -70 });
+}
+
+function initSmoothScrollLinks() {
+  document.querySelectorAll('a[href^="#"], [data-scroll-target]').forEach(link => {
+    link.addEventListener('click', event => {
+      const target = link.dataset.scrollTarget || link.getAttribute('href');
+      if (!target || target === 'javascript:void(0)') return;
+      event.preventDefault();
+      if (link.dataset.openTab) activatePortfolioTab(link.dataset.openTab);
+      scrollToTarget(target);
+    });
+  });
+}
+
+function initInlineNewsletter() {
+  const form = document.getElementById('inlineNlForm');
+  const success = document.getElementById('inlineNlSuccess');
+  const btn = document.getElementById('inlineNlSubmit');
+  const input = document.getElementById('inlineNlEmail');
+  if (!form || !success || !btn || !input) return;
+
+  form.addEventListener('submit', async event => {
+    event.preventDefault();
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+      if (!res.ok) throw new Error('server');
+      form.hidden = true;
+      success.hidden = false;
+    } catch {
+      window.location.href =
+        'mailto:thisissamayah@gmail.com?subject=Newsletter%20Subscription&body=Please%20add%20' +
+        encodeURIComponent(input.value) + '%20to%20your%20newsletter.';
+      btn.textContent = 'Notify Me';
+      btn.disabled = false;
+    }
+  });
+}
+
+function initBackToTop() {
+  const btn = document.getElementById('backToTop');
+  if (!btn) return;
+  btn.addEventListener('click', () => lenis.scrollTo(0));
+}
+
+function initQuickActions() {
+  const bar = document.getElementById('quickActions');
+  const footer = document.getElementById('footerContainer');
+  if (!bar || !footer || !window.ScrollTrigger) return;
+
+  ScrollTrigger.create({
+    trigger: '#hero',
+    start: 'bottom bottom',
+    endTrigger: footer,
+    end: 'top bottom',
+    onEnter: () => bar.classList.add('visible'),
+    onEnterBack: () => bar.classList.add('visible'),
+    onLeave: () => bar.classList.remove('visible'),
+    onLeaveBack: () => bar.classList.remove('visible')
+  });
+}
+
+function initHeroStats() {
+  const stats = document.querySelectorAll('.hero-stat-number');
+  if (!stats.length || !window.ScrollTrigger) return;
+
+  ScrollTrigger.create({
+    trigger: '.hero-stats',
+    start: 'top 85%',
+    once: true,
+    onEnter: () => {
+      stats.forEach(stat => {
+        const target = Number(stat.dataset.count || stat.textContent.replace(/\D/g, ''));
+        const prefix = stat.dataset.prefix || '';
+        const suffix = stat.dataset.suffix || '';
+        const state = { value: 0 };
+        gsap.to(state, {
+          value: target,
+          duration: 1.2,
+          ease: 'power2.out',
+          onUpdate: () => {
+            stat.textContent = `${prefix}${Math.round(state.value)}${suffix}`;
+          }
+        });
+      });
+    }
+  });
+}
+
 /* Open lightbox */
 function openGalleryLightbox(index) {
   lightboxCurrentIndex = index;
@@ -1056,7 +1394,7 @@ function openGalleryLightbox(index) {
 
 /* Render image or video for current index */
 function renderLightboxContent() {
-  const item   = galleryItems[lightboxCurrentIndex];
+  const item   = portfolioItems[lightboxCurrentIndex];
   const media   = document.getElementById('lightboxMedia');
   const caption = document.getElementById('lightboxCaption');
 
@@ -1071,12 +1409,14 @@ function renderLightboxContent() {
     media.appendChild(v);
   } else {
     const img = document.createElement('img');
-    img.src = item.src; img.alt = item.label;
+    img.src = item.src; img.alt = item.project || item.label;
     media.appendChild(img);
   }
 
   if (caption) {
-    caption.textContent = `${item.label}  ·  ${lightboxCurrentIndex + 1} / ${galleryItems.length}`;
+    const label = item.project || item.label;
+    const meta = item.role ? ` - ${item.role}` : '';
+    caption.textContent = `${label}${meta} - ${lightboxCurrentIndex + 1} / ${portfolioItems.length}`;
   }
 }
 
@@ -1096,6 +1436,14 @@ function closeGalleryLightbox() {
 document.addEventListener('DOMContentLoaded', () => {
   buildFilmStrip();
   buildFilmRails();
+  renderPortfolioCards();
+  initPortfolioTabs();
+  renderProofSections();
+  initLoopedProof();
+  renderSampleLinks();
+  initSmoothScrollLinks();
+  initInlineNewsletter();
+  initBackToTop();
 
   const closeBtn = document.getElementById('lightboxClose');
   const prevBtn  = document.getElementById('lightboxPrev');
@@ -1105,11 +1453,11 @@ document.addEventListener('DOMContentLoaded', () => {
   if (closeBtn) closeBtn.addEventListener('click', closeGalleryLightbox);
 
   if (prevBtn) prevBtn.addEventListener('click', () => {
-    lightboxCurrentIndex = (lightboxCurrentIndex - 1 + galleryItems.length) % galleryItems.length;
+    lightboxCurrentIndex = (lightboxCurrentIndex - 1 + portfolioItems.length) % portfolioItems.length;
     renderLightboxContent();
   });
   if (nextBtn) nextBtn.addEventListener('click', () => {
-    lightboxCurrentIndex = (lightboxCurrentIndex + 1) % galleryItems.length;
+    lightboxCurrentIndex = (lightboxCurrentIndex + 1) % portfolioItems.length;
     renderLightboxContent();
   });
 
@@ -1120,11 +1468,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!l || !l.classList.contains('open')) return;
     if (e.key === 'Escape') closeGalleryLightbox();
     if (e.key === 'ArrowLeft') {
-      lightboxCurrentIndex = (lightboxCurrentIndex - 1 + galleryItems.length) % galleryItems.length;
+      lightboxCurrentIndex = (lightboxCurrentIndex - 1 + portfolioItems.length) % portfolioItems.length;
       renderLightboxContent();
     }
     if (e.key === 'ArrowRight') {
-      lightboxCurrentIndex = (lightboxCurrentIndex + 1) % galleryItems.length;
+      lightboxCurrentIndex = (lightboxCurrentIndex + 1) % portfolioItems.length;
       renderLightboxContent();
     }
   });
@@ -1195,7 +1543,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Graceful fallback — open mailto
       const email = document.getElementById('nlEmail').value;
       window.location.href =
-        'mailto:thisissamayh@gmail.com?subject=Newsletter%20Subscription&body=Please%20add%20' +
+        'mailto:thisissamayah@gmail.com?subject=Newsletter%20Subscription&body=Please%20add%20' +
         encodeURIComponent(email) + '%20to%20your%20newsletter.';
       btn.textContent = 'Subscribe';
       btn.disabled    = false;
