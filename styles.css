@@ -1632,9 +1632,17 @@ body {
   .footer-content {
     margin-bottom: 40px;
   }
-  .loader-text {
-    font-size: 1rem;
+  .loader-row-1 .loader-letter {
+    font-size: clamp(1.2rem, 5vw, 1.8rem);
     letter-spacing: 3px;
+  }
+  .loader-row-2 .loader-letter {
+    font-size: clamp(0.7rem, 3vw, 1rem);
+    letter-spacing: 4px;
+  }
+  .loader-tagline {
+    font-size: 0.55rem;
+    letter-spacing: 2px;
   }
 }
 
