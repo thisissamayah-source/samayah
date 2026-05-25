@@ -1624,9 +1624,11 @@ document.addEventListener('DOMContentLoaded', () => {
       link.addEventListener('click', () => {
         hamburger.classList.remove('active');
         navLinks.classList.remove('active');
+      });
     });
   }
 });
+
 
 // =========================================================================
 // INTERVIEW MODAL LOGIC
