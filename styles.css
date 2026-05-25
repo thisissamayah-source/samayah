@@ -544,6 +544,42 @@ body {
 }
 
 /* =========================================================================
+   MARQUEE TICKER
+========================================================================= */
+.marquee-container {
+  width: 100%;
+  overflow: hidden;
+  background: rgba(8, 10, 16, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: var(--gold);
+  padding: 18px 0;
+  display: flex;
+  white-space: nowrap;
+  position: relative;
+  z-index: 20;
+  border-top: 1px solid rgba(212,175,55,0.15);
+  border-bottom: 1px solid rgba(212,175,55,0.15);
+}
+.marquee-content {
+  display: flex;
+  animation: scroll-marquee 40s linear infinite;
+}
+.marquee-content span {
+  font-family: var(--font-sans);
+  font-size: 0.85rem;
+  letter-spacing: 4px;
+  font-weight: 400;
+  padding: 0 3vw;
+  text-transform: uppercase;
+  color: rgba(212, 175, 55, 0.85);
+}
+@keyframes scroll-marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+/* =========================================================================
    BOOKS SHOWCASE (PARALLAX)
 ========================================================================= */
 .books-showcase {
