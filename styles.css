@@ -1016,13 +1016,11 @@ body {
 /* ---- BIO PANELS ---- */
 .about-text {
   flex: 1;
-  position: relative;
+  display: grid;
   min-height: 380px;
 }
 .bio-panel {
-  position: absolute;
-  top: 0; left: 0;
-  width: 100%;
+  grid-area: 1 / 1;
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.4s ease, transform 0.4s ease;
