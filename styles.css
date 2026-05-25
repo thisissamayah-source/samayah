@@ -2263,6 +2263,38 @@ body {
     font-size: 0.55rem;
     letter-spacing: 2px;
   }
+  .hero-stats {
+    grid-template-columns: 1fr;
+    gap: 5px;
+    padding: 10px;
+  }
+  .hero-stat {
+    width: 100%;
+  }
+  .about-author .flip-card-container {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2/3;
+  }
+}
+
+/* =========================================================================
+   PORTRAIT MODE OVERRIDES
+========================================================================= */
+@media (max-width: 1024px) and (orientation: portrait) {
+  .hero-container {
+    padding-top: 15vh;
+  }
+  .book-tilt-wrap {
+    width: 80vw;
+    height: 120vw;
+    max-width: 300px;
+    max-height: 450px;
+  }
+  .book-3d {
+    width: 100%;
+    height: 100%;
+  }
 }
 
 /* =========================================================================

@@ -283,39 +283,51 @@ function initScrollTriggers() {
       }
     });
 
-    const isMobile = window.innerWidth < 768;
-    const parallaxAmount = isMobile ? 20 : 100;
-
-    // Parallax on the Book Images
+    let mm = gsap.matchMedia();
     const tiltWrap = row.querySelector('.book-tilt-wrap');
-    gsap.fromTo(tiltWrap, 
-      { y: parallaxAmount }, 
-      {
-        y: -parallaxAmount,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: row,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: true
-        }
-      }
-    );
-
-    // Text Fade In
     const info = row.querySelector('.book-info');
-    gsap.fromTo(info,
-      { opacity: 0, y: 50, z: 100 },
-      {
-        opacity: 1, y: 0, z: 100, force3D: true,
-        duration: 1,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: row,
-          start: 'top 75%'
-        }
+
+    mm.add({
+      isDesktop: "(min-width: 768px)",
+      isMobile: "(max-width: 767px)"
+    }, (context) => {
+      let { isMobile } = context.conditions;
+      let parallaxAmount = isMobile ? 20 : 100;
+      let yOffset = isMobile ? 20 : 50;
+
+      // Parallax on the Book Images
+      if (tiltWrap) {
+        gsap.fromTo(tiltWrap, 
+          { y: parallaxAmount }, 
+          {
+            y: -parallaxAmount,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: row,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: true
+            }
+          }
+        );
       }
-    );
+
+      // Text Fade In
+      if (info) {
+        gsap.fromTo(info,
+          { opacity: 0, y: yOffset, z: 100 },
+          {
+            opacity: 1, y: 0, z: 100, force3D: true,
+            duration: 1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: row,
+              start: isMobile ? 'top 85%' : 'top 75%'
+            }
+          }
+        );
+      }
+    });
   });
 }
 
