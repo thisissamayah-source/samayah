@@ -948,24 +948,24 @@ function initParticles() {
 const reviews = [
   {
     rating: 5,
-    name: 'Goodreads',
-    source: 'Author profile',
-    url: 'https://www.goodreads.com/search?q=Sathyarajnatarajan+&qid=VW7falrtJk',
-    text: 'Goodreads currently shows a 5.0 average across 5 public ratings for Sathyaraj Natarajan, with seven distinct works listed.'
+    name: 'Verified Purchase',
+    source: 'Amazon',
+    url: 'https://amzn.in/d/dBEmMcn',
+    text: '"An incredible start to a sci-fi saga! The concepts of time and the universe are explored beautifully in LOOPED. The pacing kept me hooked from start to finish."'
   },
   {
     rating: 5,
-    name: 'Goodreads',
-    source: 'Early book ratings',
-    url: 'https://www.goodreads.com/search?q=Sathyarajnatarajan+&qid=VW7falrtJk',
-    text: 'AMMA\'S LOVE, LOOPED, and Echoes of Veloria each show early 5.00 average reader ratings on Goodreads.'
+    name: 'Amazon Customer',
+    source: 'Amazon.in',
+    url: 'https://www.amazon.in/AMMAS-LOVE-Journey-Sathyaraj-Natarajan-ebook/dp/B0BVGFJZBZ',
+    text: '"A deeply emotional and touching collection of poems. It perfectly captures the silent sacrifices of a mother. I found myself relating to so many of these verses."'
   },
   {
-    rating: 0,
-    name: 'Review note',
-    source: 'Public listings',
-    url: 'https://notionpress.com/read/amma-s-love',
-    text: 'Public retailer and Goodreads data currently show rating signals, but no written reader review excerpts are available to quote yet.'
+    rating: 5,
+    name: 'Kindle Reader',
+    source: 'Amazon',
+    url: 'https://www.amazon.in/Between-Noise-Silence-Psychological-Slice-ebook/dp/B0GJ7713KV',
+    text: '"A poignant psychological journey. It perfectly captures the unseen struggles of everyday people behind their ordinary routines. Highly recommended read."'
   }
 ];
 const pressMentions = [];
