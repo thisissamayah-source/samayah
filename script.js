@@ -411,7 +411,12 @@ function initCursor() {
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', function (e) {
     e.preventDefault();
-    lenis.scrollTo(this.getAttribute('href'));
+    const target = this.getAttribute('href');
+    if (target === '#') {
+      lenis.scrollTo(0);
+    } else {
+      lenis.scrollTo(target);
+    }
   });
 });
 
