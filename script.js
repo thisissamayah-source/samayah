@@ -710,10 +710,7 @@ function initParticles() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(212, 175, 55, ${alpha * 0.5})`;
-        ctx.shadowBlur = width > 768 ? 5 : 0;
-        ctx.shadowColor = `rgba(212, 175, 55, ${alpha})`;
         ctx.fill();
-        ctx.shadowBlur = 0;
         return;
       }
 
@@ -734,10 +731,7 @@ function initParticles() {
       grad.addColorStop(0.4, `rgba(212, 175, 55, ${alpha})`);
       grad.addColorStop(1, `rgba(212, 175, 55, 0)`);
       ctx.fillStyle = grad;
-      ctx.shadowBlur = width > 768 ? 15 : 0;
-      ctx.shadowColor = `rgba(212, 175, 55, ${alpha})`;
       ctx.fill();
-      ctx.shadowBlur = 0; // reset
 
       // Thorax & Head
       ctx.fillStyle = "rgba(20, 15, 5, 0.9)";
@@ -901,19 +895,14 @@ function initParticles() {
 
     const isMobile = width < 768;
     const isTablet = width < 1024;
-    // Generous counts so mobile/tablet feel alive too
-    // Mobile: ~40 | Tablet: ~80 | Desktop: ~200
-    const divisor = isMobile ? 8500 : isTablet ? 7000 : 5500;
-    const minCount = isMobile ? 40 : isTablet ? 80 : 160;
+    // Optimize counts so canvas performs well
+    const divisor = isMobile ? 12000 : isTablet ? 9000 : 7000;
+    const minCount = isMobile ? 20 : isTablet ? 40 : 80;
     let numParticles = Math.max(minCount, Math.floor((width * height) / divisor));
 
     for(let i = 0; i < numParticles; i++) {
       particles.push(new Firefly());
     }
-    
-    // Add 2 highly realistic majestic golden butterflies
-    butterflies.push(new Butterfly());
-    butterflies.push(new Butterfly());
   }
 
   function animateParticles() {
@@ -923,11 +912,6 @@ function initParticles() {
     for (let i = 0; i < particles.length; i++) {
       particles[i].update();
       particles[i].draw();
-    }
-    
-    for (let i = 0; i < butterflies.length; i++) {
-      butterflies[i].update();
-      butterflies[i].draw();
     }
     
     requestAnimationFrame(animateParticles);
