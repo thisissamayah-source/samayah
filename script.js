@@ -258,12 +258,15 @@ function initScrollTriggers() {
       }
     });
 
+    const isMobile = window.innerWidth < 768;
+    const parallaxAmount = isMobile ? 20 : 100;
+
     // Parallax on the Book Images
     const tiltWrap = row.querySelector('.book-tilt-wrap');
     gsap.fromTo(tiltWrap, 
-      { y: 100 }, 
+      { y: parallaxAmount }, 
       {
-        y: -100,
+        y: -parallaxAmount,
         ease: 'none',
         scrollTrigger: {
           trigger: row,

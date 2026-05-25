@@ -1454,8 +1454,9 @@ body {
   .book-row,
   .book-row.reverse {
     flex-direction: column;
-    gap: 40px;
+    gap: 70px;
     min-height: auto;
+    padding: 60px 0;
   }
   .book-tilt-wrap {
     width: 300px;
@@ -1531,8 +1532,8 @@ body {
   /* Books */
   .book-row,
   .book-row.reverse {
-    gap: 30px;
-    padding: 40px 0;
+    gap: 60px;
+    padding: 50px 0;
   }
   .book-tilt-wrap { width: 250px; }
   .book-3d { width: 250px; height: 375px; }
