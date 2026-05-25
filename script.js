@@ -681,7 +681,7 @@ function initParticles() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(212, 175, 55, ${alpha * 0.5})`;
-        ctx.shadowBlur = 5;
+        ctx.shadowBlur = width > 768 ? 5 : 0;
         ctx.shadowColor = `rgba(212, 175, 55, ${alpha})`;
         ctx.fill();
         ctx.shadowBlur = 0;
@@ -705,7 +705,7 @@ function initParticles() {
       grad.addColorStop(0.4, `rgba(212, 175, 55, ${alpha})`);
       grad.addColorStop(1, `rgba(212, 175, 55, 0)`);
       ctx.fillStyle = grad;
-      ctx.shadowBlur = 15;
+      ctx.shadowBlur = width > 768 ? 15 : 0;
       ctx.shadowColor = `rgba(212, 175, 55, ${alpha})`;
       ctx.fill();
       ctx.shadowBlur = 0; // reset
@@ -817,7 +817,7 @@ function initParticles() {
       ctx.fill();
       
       ctx.fillStyle = "rgba(255, 215, 0, 0.8)";
-      ctx.shadowBlur = 15;
+      ctx.shadowBlur = width > 768 ? 15 : 0;
       ctx.shadowColor = "rgba(255, 215, 0, 1)";
 
       // Forewing (Left)
@@ -873,9 +873,9 @@ function initParticles() {
     const isMobile = width < 768;
     const isTablet = width < 1024;
     // Generous counts so mobile/tablet feel alive too
-    // Mobile: ~60–80 | Tablet: ~120–160 | Desktop: ~300–400
-    const divisor = isMobile ? 6500 : isTablet ? 6000 : 5500;
-    const minCount = isMobile ? 65 : isTablet ? 110 : 160;
+    // Mobile: ~40 | Tablet: ~80 | Desktop: ~200
+    const divisor = isMobile ? 8500 : isTablet ? 7000 : 5500;
+    const minCount = isMobile ? 40 : isTablet ? 80 : 160;
     let numParticles = Math.max(minCount, Math.floor((width * height) / divisor));
 
     for(let i = 0; i < numParticles; i++) {

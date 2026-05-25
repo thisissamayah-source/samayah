@@ -1638,6 +1638,18 @@ body {
 }
 
 /* =========================================================================
+   PERFORMANCE OPTIMIZATIONS
+   ========================================================================= */
+@media (max-width: 768px) {
+  /* SVG feTurbulence filters kill mobile GPU performance */
+  .dynamic-bg::after,
+  .loader-grain {
+    display: none !important;
+    animation: none !important;
+  }
+}
+
+/* =========================================================================
    SCROLL PROGRESS BAR
 ========================================================================= */
 #scroll-progress-bar {
