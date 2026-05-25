@@ -566,6 +566,8 @@ body {
 .book-info {
   flex: 1;
   max-width: 500px;
+  position: relative;
+  z-index: 10;
 }
 .b-num {
   font-family: var(--font-serif);
