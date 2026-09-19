@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Writing &amp; Press | Sathyaraj Natarajan</title>
+  <link rel="icon" href="assets/logo.png" type="image/png"/>
+  <meta name="description" content="Essays, craft notes, and press by Sathyaraj Natarajan — poetry, science-fiction writing, and interviews including the Awesome Gang author interview."/>
+  <meta name="robots" content="index, follow"/>
+  <meta name="author" content="Sathyaraj Natarajan"/>
+  <!-- Open Graph -->
+  <meta property="og:type" content="website"/>
+  <meta property="og:url" content="https://sathyarajnatarajan.in/writing.html"/>
+  <meta property="og:title" content="Writing & Press | Sathyaraj Natarajan"/>
+  <meta property="og:description" content="Essays, craft notes, and press by Sathyaraj Natarajan — poetry, science-fiction writing, and interviews."/>
+  <meta property="og:image" content="https://sathyarajnatarajan.in/assets/logo.png"/>
+  <meta property="og:site_name" content="Sathyaraj Natarajan"/>
+  <meta property="og:locale" content="en_IN"/>
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image"/>
+  <meta name="twitter:site" content="@thisissamayah"/>
+  <meta name="twitter:creator" content="@thisissamayah"/>
+  <meta name="twitter:title" content="Writing & Press | Sathyaraj Natarajan"/>
+  <meta name="twitter:description" content="Essays, craft notes, and press by Sathyaraj Natarajan — poetry, science-fiction writing, and interviews."/>
+  <meta name="twitter:image" content="https://sathyarajnatarajan.in/assets/logo.png"/>
+  <link rel="canonical" href="https://sathyarajnatarajan.in/writing.html"/>
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "url": "https://sathyarajnatarajan.in/writing.html",
+    "name": "Writing & Press | Sathyaraj Natarajan",
+    "description": "Essays, craft notes, and press by Sathyaraj Natarajan.",
+    "isPartOf": { "@id": "https://sathyarajnatarajan.in/#website" },
+    "about": { "@id": "https://sathyarajnatarajan.in/#person" }
+  }
+  </script>
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Raleway:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Inter:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles.css?v=15"/>
+  <style>
+    /* Writing page — extends the site theme (styles.css) */
+    .nav-links a.active { color: var(--gold); }
+    .writing-hero { padding: 190px 5% 60px; text-align: center; }
+    .writing-hero .section-heading { margin-bottom: 18px; }
+    .writing-hero .section-heading .gold { color: var(--gold); }
+    .writing-sub {
+      font-family: var(--font-reading);
+      color: rgba(255,255,255,0.55);
+      max-width: 640px;
+      margin: 0 auto;
+      line-height: 1.8;
+    }
+    .writing-section { padding: 30px 0 10px; }
+    .writing-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 5%;
+    }
+    .writing-card {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      padding: 28px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: linear-gradient(145deg, rgba(255,255,255,0.055), rgba(0,0,0,0.34));
+      transition: border-color 0.25s ease, transform 0.25s ease;
+    }
+    .writing-card:hover {
+      border-color: rgba(212,175,55,0.38);
+      transform: translateY(-4px);
+    }
+    .writing-kicker {
+      color: var(--gold);
+      font-size: 0.6rem;
+      letter-spacing: 2.4px;
+      text-transform: uppercase;
+    }
+    .writing-card h3 {
+      font-family: var(--font-serif);
+      font-size: 1.25rem;
+      line-height: 1.4;
+      font-weight: 600;
+    }
+    .writing-card h3 a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 0.25s ease;
+    }
+    .writing-card h3 a:hover { color: var(--gold); }
+    .writing-card p {
+      color: rgba(255,255,255,0.58);
+      font-family: var(--font-reading);
+      line-height: 1.65;
+      font-size: 0.92rem;
+      flex-grow: 1;
+    }
+    .writing-link {
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+    .writing-link:hover { color: #fff; }
+    .more-medium { text-align: center; margin: 48px 0 110px; }
+    .more-medium a {
+      display: inline-block;
+      padding: 15px 35px;
+      border: 1px solid var(--gold);
+      color: #fff;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 0.8rem;
+      transition: all 0.3s;
+    }
+    .more-medium a:hover { background: var(--gold); color: #000; }
+    .press-card {
+      max-width: 760px;
+      margin: 0 auto 120px;
+      background: #111;
+      border: 1px solid rgba(212,175,55,0.3);
+      border-radius: 10px;
+      padding: 50px;
+    }
+    .press-meta {
+      color: var(--gold);
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+    }
+    .press-title {
+      font-family: var(--font-serif);
+      font-size: 2rem;
+      color: #fff;
+      line-height: 1.25;
+      margin-bottom: 10px;
+    }
+    .press-sub {
+      font-family: var(--font-serif);
+      font-size: 1.1rem;
+      color: rgba(255,255,255,0.6);
+      font-style: italic;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      line-height: 1.7;
+    }
+    .press-footer { text-align: center; }
+    @media (max-width: 1024px) {
+      .writing-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (max-width: 768px) {
+      .writing-grid { grid-template-columns: 1fr; }
+      .press-card { padding: 30px 20px; }
+      .press-title { font-size: 1.6rem; }
+    }
+  </style>
+</head>
+<body class="loading">
+
+<!-- SCROLL PROGRESS BAR -->
+<div id="scroll-progress-bar"></div>
+
+<!-- AMBIENT SOUND TOGGLE -->
+<button id="ambientToggle" class="ambient-btn" title="Play cinematic ambience" aria-label="Toggle cinematic ambience">
+  <span class="ambient-rings">
+    <span class="amb-ring r1"></span>
+    <span class="amb-ring r2"></span>
+    <span class="amb-ring r3"></span>
+  </span>
+  <svg class="amb-icon-off" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+    <line x1="23" y1="9" x2="17" y2="15"/>
+    <line x1="17" y1="9" x2="23" y2="15"/>
+  </svg>
+  <svg class="amb-icon-on" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+    <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+  </svg>
+</button>
+
+<!-- PAGE BACKGROUND (Color fades dynamically) -->
+<div id="dynamic-bg" class="dynamic-bg"></div>
+
+<!-- PARTICLE CANVAS (Neural Network / Fireflies) -->
+<canvas id="particle-canvas" class="particle-canvas"></canvas>
+
+<!-- LOADER (Cinematic) -->
+<div id="loader">
+  <div class="loader-grain"></div>
+  <div class="loader-scan"></div>
+  <div class="clapper-panel clapper-top"></div>
+  <div class="clapper-panel clapper-bot"></div>
+  <div class="loader-center">
+    <div class="loader-ring">
+      <svg width="84" height="84" viewBox="0 0 84 84" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="42" cy="42" r="38" stroke="rgba(212,175,55,0.4)" stroke-width="3" />
+        <circle cx="42" cy="42" r="34" stroke="rgba(212,175,55,0.8)" stroke-width="1" />
+        <circle cx="42" cy="42" r="8" fill="#D4AF37" />
+        <circle cx="42" cy="42" r="3" fill="#111" />
+        <g stroke="rgba(212,175,55,0.6)" stroke-width="2">
+          <line x1="42" y1="10" x2="42" y2="34" />
+          <line x1="42" y1="50" x2="42" y2="74" />
+          <line x1="10" y1="42" x2="34" y2="42" />
+          <line x1="50" y1="42" x2="74" y2="42" />
+          <line x1="19.4" y1="19.4" x2="36.3" y2="36.3" />
+          <line x1="47.7" y1="47.7" x2="64.6" y2="64.6" />
+          <line x1="19.4" y1="64.6" x2="36.3" y2="47.7" />
+          <line x1="47.7" y1="36.3" x2="64.6" y2="19.4" />
+        </g>
+      </svg>
+    </div>
+    <div class="loader-name">
+      <div class="loader-row-1" id="loaderRow1"></div>
+      <div class="loader-row-2" id="loaderRow2"></div>
+    </div>
+    <p class="loader-tagline">Visual Engineer &nbsp;&middot;&nbsp; Author &nbsp;&middot;&nbsp; Film Restoration</p>
+    <div class="loader-led-bar" id="loaderLedBar"></div>
+    <div class="loader-counter" id="loaderCounter">000</div>
+  </div>
+  <div class="loader-flash" id="loaderFlash"></div>
+</div>
+
+<!-- NAV -->
+<nav class="nav" id="mainNav">
+  <a class="nav-logo-link" href="index.html">
+    <img src="assets/logo.png" alt="Logo" class="nav-logo-img-small"/>
+  </a>
+  <div class="nav-links">
+    <a href="index.html" id="navHome">Home</a>
+    <a href="index.html#books-anchor" id="navBooks">Books</a>
+    <a href="index.html#other-works" id="navOtherWorks">Portfolio</a>
+    <a href="index.html#journey" id="navJourney">Journey</a>
+    <a href="index.html#about" id="navAbout">About</a>
+    <a href="index.html#contact" id="navContact">Contact</a>
+    <a href="writing.html" id="navWriting" class="active">Writing</a>
+  </div>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+    <span></span>
+    <span></span>
+    <span></span>
+  </button>
+</nav>
+
+<!-- CURSOR GLOW -->
+<div id="cursor-glow"></div>
+
+<!-- SMOOTH SCROLL WRAPPER -->
+<div id="smooth-wrapper">
+
+  <!-- WRITING HEADER -->
+  <section class="writing-hero">
+    <p class="section-eyebrow">Beyond the Books</p>
+    <h1 class="section-heading">Writing <span class="gold">&amp;</span> Press</h1>
+    <p class="writing-sub">Essays, craft notes, and interviews — the thinking between the stories. From poetry and physics to time-loop science fiction and the quiet lives hidden beneath everyday noise.</p>
+  </section>
+
+  <!-- ESSAYS -->
+  <section class="writing-section" id="essays">
+    <div class="section-shell">
+      <p class="section-eyebrow">Essays &amp; Articles</p>
+      <h2 class="section-heading">Essays</h2>
+    </div>
+    <div class="writing-grid">
+      <article class="writing-card">
+        <span class="writing-kicker">Medium &middot; Conversation</span>
+        <h3><a href="https://medium.com/@thisissamayah/in-conversation-with-sathyaraj-natarajan-writing-across-time-emotion-and-expanding-worlds-fdbb6d9a9da4" target="_blank" rel="noopener">In Conversation with Sathyaraj Natarajan: Writing Across Time, Emotion, and Expanding Worlds</a></h3>
+        <p>A wide-ranging conversation on poetry, science fiction, and building expanding fictional worlds.</p>
+        <a class="writing-link" href="https://medium.com/@thisissamayah/in-conversation-with-sathyaraj-natarajan-writing-across-time-emotion-and-expanding-worlds-fdbb6d9a9da4" target="_blank" rel="noopener">Read on Medium &rarr;</a>
+      </article>
+      <article class="writing-card">
+        <span class="writing-kicker">Medium &middot; Craft</span>
+        <h3><a href="https://medium.com/@thisissamayah/i-write-poetry-and-physics-8185f639440b" target="_blank" rel="noopener">I write poetry and physics</a></h3>
+        <p>People sometimes ask how the same person writes both a tender poetry collection and hard science fiction.</p>
+        <a class="writing-link" href="https://medium.com/@thisissamayah/i-write-poetry-and-physics-8185f639440b" target="_blank" rel="noopener">Read on Medium &rarr;</a>
+      </article>
+      <article class="writing-card">
+        <span class="writing-kicker">Medium &middot; On Writing</span>
+        <h3><a href="https://medium.com/@thisissamayah/the-quietest-book-ive-ever-written-e6e34f3b821e" target="_blank" rel="noopener">The quietest book I&#8217;ve ever written</a></h3>
+        <p>Of everything I&#8217;ve written, Between the Noise and Silence is the quietest book — and the most personal.</p>
+        <a class="writing-link" href="https://medium.com/@thisissamayah/the-quietest-book-ive-ever-written-e6e34f3b821e" target="_blank" rel="noopener">Read on Medium &rarr;</a>
+      </article>
+      <article class="writing-card">
+        <span class="writing-kicker">Medium &middot; Profile</span>
+        <h3><a href="https://medium.com/@thisissamayah/sathyaraj-natarajan-the-author-behind-the-looped-time-loop-novels-1f699125b4b1" target="_blank" rel="noopener">Sathyaraj Natarajan: the author behind the LOOPED time-loop novels</a></h3>
+        <p>The author introduces himself and the LOOPED time-loop universe, in his own words.</p>
+        <a class="writing-link" href="https://medium.com/@thisissamayah/sathyaraj-natarajan-the-author-behind-the-looped-time-loop-novels-1f699125b4b1" target="_blank" rel="noopener">Read on Medium &rarr;</a>
+      </article>
+      <article class="writing-card">
+        <span class="writing-kicker">Medium &middot; Craft</span>
+        <h3><a href="https://medium.com/@thisissamayah/my-time-loop-story-outgrew-its-universe-so-i-built-a-bigger-one-6e96ff62afc1" target="_blank" rel="noopener">My Time-Loop Story Outgrew Its Universe. So I Built a Bigger One.</a></h3>
+        <p>How a time-loop idea kept expanding until it demanded an entire universe.</p>
+        <a class="writing-link" href="https://medium.com/@thisissamayah/my-time-loop-story-outgrew-its-universe-so-i-built-a-bigger-one-6e96ff62afc1" target="_blank" rel="noopener">Read on Medium &rarr;</a>
+      </article>
+      <article class="writing-card">
+        <span class="writing-kicker">Medium &middot; Science</span>
+        <h3><a href="https://medium.com/@thisissamayah/i-wrote-a-time-travel-novel-heres-the-real-science-i-stole-f65ecb356c98" target="_blank" rel="noopener">I Wrote a Time-Travel Novel. Here&#8217;s the Real Science I Stole.</a></h3>
+        <p>The real science quietly smuggled into the LOOPED time-travel novels.</p>
+        <a class="writing-link" href="https://medium.com/@thisissamayah/i-wrote-a-time-travel-novel-heres-the-real-science-i-stole-f65ecb356c98" target="_blank" rel="noopener">Read on Medium &rarr;</a>
+      </article>
+      <article class="writing-card">
+        <span class="writing-kicker">Medium &middot; On Writing</span>
+        <h3><a href="https://medium.com/@thisissamayah/the-loudest-thing-ive-written-is-a-book-about-silence-50b28ae448da" target="_blank" rel="noopener">The Loudest Thing I&#8217;ve Written Is a Book About Silence</a></h3>
+        <p>On writing a psychological slice-of-life about the silence beneath everyday noise.</p>
+        <a class="writing-link" href="https://medium.com/@thisissamayah/the-loudest-thing-ive-written-is-a-book-about-silence-50b28ae448da" target="_blank" rel="noopener">Read on Medium &rarr;</a>
+      </article>
+      <article class="writing-card">
+        <span class="writing-kicker">Medium &middot; Poetry</span>
+        <h3><a href="https://medium.com/@thisissamayah/i-wrote-a-book-of-poetry-for-my-mother-fc4494864b30" target="_blank" rel="noopener">I Wrote a Book of Poetry for My Mother</a></h3>
+        <p>The deeply personal poetry collection that began the entire journey.</p>
+        <a class="writing-link" href="https://medium.com/@thisissamayah/i-wrote-a-book-of-poetry-for-my-mother-fc4494864b30" target="_blank" rel="noopener">Read on Medium &rarr;</a>
+      </article>
+      <article class="writing-card">
+        <span class="writing-kicker">Medium &middot; Reflection</span>
+        <h3><a href="https://medium.com/@thisissamayah/every-story-begins-as-a-question-some-answers-turn-into-poems-some-turn-into-worlds-1e0276900eb2" target="_blank" rel="noopener">Every story begins as a question. Some answers turn into poems. Some turn into worlds.</a></h3>
+        <p>On where stories come from — and the places they end up.</p>
+        <a class="writing-link" href="https://medium.com/@thisissamayah/every-story-begins-as-a-question-some-answers-turn-into-poems-some-turn-into-worlds-1e0276900eb2" target="_blank" rel="noopener">Read on Medium &rarr;</a>
+      </article>
+    </div>
+    <div class="more-medium">
+      <a href="https://medium.com/@thisissamayah" target="_blank" rel="noopener">More on Medium &rarr;</a>
+    </div>
+  </section>
+
+  <!-- INTERVIEWS & PRESS -->
+  <section class="writing-section" id="press">
+    <div class="section-shell">
+      <p class="section-eyebrow">Interviews &amp; Press</p>
+      <h2 class="section-heading">Interviews &amp; Press</h2>
+      <div class="press-card">
+        <div class="press-meta">Featured Interview</div>
+        <h3 class="press-title">Interview With Author SATHYARAJ Natarajan</h3>
+        <p class="press-sub">Sathyaraj Natarajan on Awesome Gang — on his books, his writing journey, and the stories that shaped him as an author.</p>
+        <div class="press-footer">
+          <a href="https://awesomegang.com/?p=1179880" target="_blank" rel="noopener" class="interview-link-btn">Read the Interview <span class="arrow">&#8594;</span></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER / SOCIALS -->
+  <footer class="footer" id="footerContainer">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <span class="footer-kicker">Books</span>
+        <a href="https://www.amazon.in/AMMAS-LOVE-Journey-Sathyaraj-Natarajan-ebook/dp/B0BVGFJZBZ/?_encoding=UTF8" target="_blank">Amma's Love Poetry</a>
+        <a href="https://amzn.in/d/dBEmMcn" target="_blank">LOOPED</a>
+        <a href="https://amzn.in/d/08LIlyb" target="_blank">Echoes of Veloria</a>
+        <a href="https://www.amazon.in/Between-Noise-Silence-Psychological-Slice-ebook/dp/B0GJ7713KV/?_encoding=UTF8" target="_blank">Between Noise and Silence</a>
+      </div>
+      <div class="footer-col footer-connect">
+        <span class="footer-kicker">Connect</span>
+        <p>Publishing, visual engineering collaboration, or reader feedback — transmissions are open.</p>
+        <div class="social-links" id="socialLinks">
+          <a href="mailto:thisissamayah@gmail.com" class="social-btn" title="Email">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+          </a>
+          <a href="https://www.instagram.com/thisissamayah" target="_blank" rel="me noopener noreferrer" class="social-btn" title="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+          </a>
+          <a href="https://www.x.com/thisissamayah" target="_blank" rel="me noopener noreferrer" class="social-btn" title="X (Twitter)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l11.733 16h4.267l-11.733 -16z"/><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"/></svg>
+          </a>
+          <a href="https://www.youtube.com/@sathyaraj_natarajan" target="_blank" rel="me noopener noreferrer" class="social-btn" title="YouTube">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33 2.78 2.78 0 0 0 1.94 2c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.33z"></path><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon></svg>
+          </a>
+          <a href="https://www.linkedin.com/in/sathyarajnatarajan/" target="_blank" rel="me noopener noreferrer" class="social-btn" title="LinkedIn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <span class="footer-kicker">Explore</span>
+        <a href="index.html#books-anchor">Books</a>
+        <a href="index.html#other-works">Portfolio</a>
+        <a href="index.html#journey">Journey</a>
+        <a href="index.html#about">About</a>
+        <a href="index.html#contact">Contact</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 Sathyaraj Natarajan. <span>SAMAYAH.INC</span><br>All rights reserved. <span style="opacity:0.3; padding-left: 8px;">|</span> <span class="rk-credit"><span class="rk-word w1">An</span> <span class="rk-word w2">RK</span> <span class="rk-word w3">Initiative</span></span></p>
+      <button class="back-to-top" id="backToTop" type="button">Back to Top</button>
+    </div>
+  </footer>
+
+</div> <!-- /smooth-wrapper -->
+
+<!-- INTERVIEW BADGE & MODAL -->
+<div class="interview-badge" id="interviewBadge">
+  <span class="badge-text">In Conversation</span>
+</div>
+
+<div class="interview-modal" id="interviewModal">
+  <div class="interview-modal-backdrop" id="interviewModalCloseBg"></div>
+  <div class="interview-modal-content">
+    <button class="interview-close" id="interviewClose">&#x2715;</button>
+    <div class="interview-header">
+      <div class="interview-meta">Featured Interview</div>
+      <h2 class="interview-title">In Conversation with Sathyaraj Natarajan</h2>
+      <p class="interview-subtitle">Writing Across Time, Emotion, and Expanding Worlds.</p>
+    </div>
+    <div class="interview-body">
+      <div class="interview-qa">
+        <p class="question">Q: Your writing traverses vast cinematic landscapes—what draws you to these expanding worlds?</p>
+        <p class="answer">A: "For me, world-building isn't just about geography or lore; it's about the emotional resonance of the spaces the characters inhabit. When a world expands, so does the capacity for deeper, more complex human emotions."</p>
+      </div>
+      <div class="interview-qa">
+        <p class="question">Q: How do time and history play a role in your storytelling?</p>
+        <p class="answer">A: "History is the anchor. Whether we are in a futuristic setting or an ancient empire, the human condition remains remarkably constant. Time is just the canvas we use to paint those enduring struggles."</p>
+      </div>
+      <div class="interview-qa">
+        <p class="question">Q: What do you hope readers take away from your work?</p>
+        <p class="answer">A: "I want them to feel like they've lived another life. If a story can make you forget your own reality, even for a moment, and adopt the profound emotions of someone else, then I've done my job."</p>
+      </div>
+    </div>
+    <div class="interview-footer">
+      <a href="https://medium.com/@thisissamayah/in-conversation-with-sathyaraj-natarajan-writing-across-time-emotion-and-expanding-worlds-fdbb6d9a9da4" target="_blank" class="interview-link-btn">
+        Continue Reading on Medium <span class="arrow">&#8594;</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
+<script src="script.js?v=17"></script>
+</body>
+</html>
