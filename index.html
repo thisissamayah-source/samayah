@@ -1400,6 +1400,8 @@ body {
   border: 1px solid rgba(255,255,255,0.06);
   transition: transform 0.35s ease-in var(--ease-butter);
   transform-origin: center;
+  will-change: transform;
+  backface-visibility: hidden;
 }
 /* Half-flip: rotate to 90deg (edge-on) */
 .author-card-inner.flip-out {
@@ -4403,10 +4405,15 @@ var cardHints = [
 ];
 var bioPanelIds = ['bioAuthor', 'bioVE', 'bioFilm', 'bioFounder'];
 
-// Show first panel on load
+// Show first panel on load + preload all card photos so identity switches are instant
 window.addEventListener('DOMContentLoaded', function () {
   var first = document.getElementById('bioAuthor');
   if (first) first.classList.add('active');
+  cardPhotos.forEach(function (src) {
+    var im = new Image();
+    im.decoding = 'async';
+    im.src = src;
+  });
 });
 
 function syncCardUI(state) {
@@ -4455,7 +4462,7 @@ function toggleCard() {
       });
     });
 
-  }, 350); // matches flip-out transition duration
+  }, 300); // swap while card is still edge-on (transition is 350ms)
 }
 
 /* Jump directly to a specific identity state via dot click */
@@ -4488,7 +4495,7 @@ function goToCardState(target) {
         cardInner.classList.remove('flip-in');
       });
     });
-  }, 350);
+  }, 300); // swap while card is still edge-on (transition is 350ms)
 }
 
 
