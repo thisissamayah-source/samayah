@@ -3666,17 +3666,19 @@ body {
         </div>
         <!-- Identity hint -->
         <div class="flip-hint" id="flipHint">Click to explore identities</div>
-        <!-- 3-state dot indicator -->
+        <!-- 4-state dot indicator -->
         <div class="card-dots" id="cardDots">
           <button class="card-dot active" data-index="0" title="Author" onclick="goToCardState(0)"></button>
           <button class="card-dot" data-index="1" title="Visual Engineer" onclick="goToCardState(1)"></button>
           <button class="card-dot" data-index="2" title="Film Restoration" onclick="goToCardState(2)"></button>
+          <button class="card-dot" data-index="3" title="Founder" onclick="goToCardState(3)"></button>
         </div>
         <!-- Identity labels -->
         <div class="card-identity-labels">
           <span class="card-label active" data-index="0">Author</span>
           <span class="card-label" data-index="1">Visual Engineer</span>
           <span class="card-label" data-index="2">Film Restoration</span>
+          <span class="card-label" data-index="3">Founder</span>
         </div>
       </div>
 
@@ -3710,6 +3712,15 @@ body {
           <p>His experience included participation in projects such as <span class="gold-text">Lakachi Gosta</span> and <span class="gold-text">Juari</span>, while also working with restoration content connected to the <span class="gold-text">National Film Archive of India (NFAI)</span> ecosystem.</p>
           <p>Working within archival restoration environments provided exposure to restoration pipelines, preservation standards, quality review processes, collaborative workflows, and timeline-driven production execution associated with heritage film content. This journey further strengthened his cinematic perspective before moving into large-scale visual engineering and immersive event experiences.</p>
           <a class="bio-link" href="#other-works" data-scroll-target="#other-works" data-open-tab="restoration">View Restoration Work &rarr;</a>
+        </div>
+
+        <!-- STATE 3: FOUNDER -->
+        <div class="bio-panel" id="bioFounder">
+          <h2 class="ow-heading">The <span class="gold">Founder</span></h2>
+          <p>Sathyaraj Natarajan is the founder of <span class="gold-text">Samayah.co</span> &mdash; an AI-native company built on a research &rarr; build &rarr; publish &rarr; learn loop, where intelligent systems work across research, building, publishing, and learning.</p>
+          <p>The company brings together everything his journey taught him &mdash; the discipline of <span class="gold-text">film restoration</span>, the spectacle of <span class="gold-text">live visual engineering</span>, and the imagination of <span class="gold-text">storytelling</span> &mdash; directed toward building practical AI systems and creative ventures, including the <span class="gold-text">Spillway International Publication</span> imprint.</p>
+          <p>For him, founding Samayah.co is not a departure from writing &mdash; it is the next chapter of the same story: the same imagination that writes about time, now building with the technology shaping it.</p>
+          <a class="bio-link" href="https://samayah.pages.dev" target="_blank" rel="noopener noreferrer">Visit Samayah.co &rarr;</a>
         </div>
 
       </div>
@@ -4374,21 +4385,24 @@ function initCursor() {
 // (Duplicate smooth-scroll anchor handler removed — initSmoothScrollLinks owns this.)
 
 // =========================================================================
-// ABOUT SECTION — 3-STATE IDENTITY CARD (Author → VE → Film → repeat)
+// ABOUT SECTION — 4-STATE IDENTITY CARD (Author → VE → Film → Founder → repeat)
 // =========================================================================
-var cardState = 0; // 0=Author, 1=VE, 2=Film
+var cardState = 0; // 0=Author, 1=VE, 2=Film, 3=Founder
 
 var cardPhotos = [
   'assets/author_photo.jpg',
   'assets/author_photo_ve.jpg',
-  'assets/author_photo_film.jpg'
+  'assets/author_photo_film.jpg',
+  // TODO: replace with 'assets/author_photo_founder.jpg' once the founder photo is provided
+  'assets/author_photo.jpg'
 ];
 var cardHints = [
   'Click to reveal',
   'Click to reveal',
+  'Click to reveal',
   'Click to reveal'
 ];
-var bioPanelIds = ['bioAuthor', 'bioVE', 'bioFilm'];
+var bioPanelIds = ['bioAuthor', 'bioVE', 'bioFilm', 'bioFounder'];
 
 // Show first panel on load
 window.addEventListener('DOMContentLoaded', function () {
@@ -4418,7 +4432,7 @@ function toggleCard() {
   setTimeout(function () {
     // Step 2: At the edge — swap photo and bio
     var prevState = cardState;
-    cardState = (cardState + 1) % 3;
+    cardState = (cardState + 1) % 4;
 
     // Swap image
     cardImg.src = cardPhotos[cardState];
