@@ -883,6 +883,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <script src="https://unpkg.com/@studio-freight/lenis@1.0.34/dist/lenis.min.js"></script>
-  <script src="script.js?v=17"></script>
+  <script src="script.js?v=17"></script> <!-- Rotating hero titles: adds "Founder, Samayah.co" as the last title in the cycle --> <script> /* Overrides initTitleShuffle() defined in script.js so the hero-subtitle rotation includes "Founder, Samayah.co" last. Animation and timing unchanged. */ function initTitleShuffle() { const titleEl = document.querySelector('.hero-subtitle'); if (!titleEl) return; const titles = ["VISUAL ENGINEER", "AUTHOR", "VISUAL STORYTELLER", "Founder, Samayah.co"]; let index = 0; setInterval(() => { gsap.to(titleEl, { opacity: 0, y: -10, duration: 0.4, onComplete: () => { index = (index + 1) % titles.length; titleEl.textContent = titles[index]; gsap.fromTo(titleEl, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.4 }); } }); }, 3000); } </script>
 </body>
 </html>
